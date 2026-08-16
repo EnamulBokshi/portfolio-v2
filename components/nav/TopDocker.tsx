@@ -28,9 +28,9 @@ export function TopDocker({ activeSection, onSelectSection }: TopDockerProps) {
   return (
     <header
       aria-label="Top Menu Docker"
-      className="fixed top-2.5 sm:top-4 left-1/2 -translate-x-1/2 z-50 pointer-events-auto max-w-[95vw]"
+      className="fixed top-2 sm:top-4 left-1/2 -translate-x-1/2 z-50 pointer-events-auto w-[95vw] max-w-fit"
     >
-      <div className="relative flex items-center gap-1 sm:gap-1.5 px-2.5 sm:px-3.5 py-1.5 rounded-2xl glass-panel shadow-[0_12px_40px_rgba(0,0,0,0.75)] backdrop-blur-2xl border border-white/10 bg-[#121215]/90 overflow-x-auto scrollbar-none">
+      <div className="relative flex items-center gap-1 sm:gap-1.5 px-2 sm:px-3 py-1 sm:py-1.5 rounded-2xl glass-panel shadow-[0_12px_40px_rgba(0,0,0,0.85)] backdrop-blur-2xl border border-white/10 bg-[#121215]/95 overflow-x-auto scrollbar-none max-w-full">
         {/* Brand Tag */}
         <button
           onClick={() => onSelectSection("intro")}
@@ -39,13 +39,13 @@ export function TopDocker({ activeSection, onSelectSection }: TopDockerProps) {
           <div className="w-5 h-5 rounded-md bg-zinc-800 border border-white/10 flex items-center justify-center shadow-sm">
             <span className="text-[9px] font-bold font-mono text-amber-400">EB</span>
           </div>
-          <span className="text-xs font-semibold font-heading text-zinc-200 hidden xl:inline-block">
+          <span className="text-xs font-semibold font-heading text-zinc-200 hidden lg:inline-block">
             Enamul
           </span>
         </button>
 
         {/* Docker Navigation Buttons */}
-        <nav className="flex items-center gap-1 sm:gap-1 shrink-0">
+        <nav className="flex items-center gap-1 shrink-0">
           {NAV_SECTIONS.map((sec) => {
             const Icon = sec.icon;
             const isActive = activeSection === sec.id;
@@ -61,8 +61,10 @@ export function TopDocker({ activeSection, onSelectSection }: TopDockerProps) {
                 }`}
               >
                 <Icon className={`w-3.5 h-3.5 ${isActive ? "text-amber-400" : "text-zinc-500"}`} />
-                <span className="hidden md:inline text-[9px] text-zinc-500 font-bold">{sec.number}.</span>
-                <span className="text-[11px] sm:text-xs">{sec.label}</span>
+                <span className="hidden xl:inline text-[9px] text-zinc-500 font-bold">{sec.number}.</span>
+                <span className={`text-[11px] sm:text-xs ${isActive ? "inline" : "hidden sm:inline"}`}>
+                  {sec.label}
+                </span>
 
                 {/* Active Indicator Light */}
                 {isActive && (

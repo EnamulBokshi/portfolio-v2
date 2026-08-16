@@ -1,5 +1,5 @@
 import { prisma } from "@/lib/prisma";
-import type { Project, Skill, Achievement, BeltItem, CV, Experience } from "@prisma/client";
+import type { Project, Skill, Achievement, BeltItem, CV, Experience, ThemeConfig } from "@prisma/client";
 
 export interface HomePortfolioData {
   projects: (Project & { images?: { url: string; alt: string | null }[] })[];
@@ -8,11 +8,12 @@ export interface HomePortfolioData {
   experiences: Experience[];
   beltItems: BeltItem[];
   activeCv: CV | null;
+  themeConfig: ThemeConfig | null;
 }
 
 export async function getHomePortfolioData(): Promise<HomePortfolioData> {
   try {
-    const [projects, skills, achievements, experiences, beltItems, activeCv] = await Promise.all([
+    const [projects, skills, achievements, experiences, beltItems, activeCv, themeConfig] = await Promise.all([
       prisma.project.findMany({
         include: { images: { orderBy: { order: "asc" } } },
         orderBy: { order: "asc" },
@@ -36,6 +37,10 @@ export async function getHomePortfolioData(): Promise<HomePortfolioData> {
         where: { isActive: true },
         orderBy: { uploadedAt: "desc" },
       }),
+      prisma.themeConfig.findFirst({
+        where: { isActive: true },
+        orderBy: { updatedAt: "desc" },
+      }),
     ]);
 
     return {
@@ -45,6 +50,7 @@ export async function getHomePortfolioData(): Promise<HomePortfolioData> {
       experiences,
       beltItems,
       activeCv,
+      themeConfig,
     };
   } catch (error) {
     console.error("Failed to fetch home portfolio data:", error);
@@ -55,6 +61,7 @@ export async function getHomePortfolioData(): Promise<HomePortfolioData> {
       experiences: [],
       beltItems: [],
       activeCv: null,
+      themeConfig: null,
     };
   }
 }

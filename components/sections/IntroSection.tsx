@@ -10,11 +10,11 @@ interface IntroSectionProps {
 }
 
 const ORBITAL_TECHS = [
-  { name: "Next.js", color: "from-zinc-800 to-zinc-950", border: "border-white/20", text: "text-zinc-100", pos: "top-[-10px] left-1/2 -translate-x-1/2" },
-  { name: "PostgreSQL", color: "from-blue-900/40 to-slate-900", border: "border-blue-500/30", text: "text-blue-300", pos: "top-[20%] left-[-15px]" },
-  { name: "Docker", color: "from-cyan-950/50 to-slate-900", border: "border-cyan-500/30", text: "text-cyan-300", pos: "bottom-[12%] left-[-8px]" },
-  { name: "Redis", color: "from-rose-950/50 to-slate-900", border: "border-rose-500/30", text: "text-rose-300", pos: "top-[28%] right-[-18px]" },
-  { name: "Node.js", color: "from-emerald-950/50 to-slate-900", border: "border-emerald-500/30", text: "text-emerald-300", pos: "bottom-[10%] right-[-10px]" },
+  { name: "Next.js", color: "from-zinc-800 to-zinc-950", border: "border-white/20", text: "text-zinc-100", pos: "top-[-8px] sm:top-[-10px] left-1/2 -translate-x-1/2" },
+  { name: "PostgreSQL", color: "from-blue-900/40 to-slate-900", border: "border-blue-500/30", text: "text-blue-300", pos: "top-[20%] left-[-10px] sm:left-[-15px]" },
+  { name: "Docker", color: "from-cyan-950/50 to-slate-900", border: "border-cyan-500/30", text: "text-cyan-300", pos: "bottom-[12%] left-[-6px] sm:left-[-8px]" },
+  { name: "Redis", color: "from-rose-950/50 to-slate-900", border: "border-rose-500/30", text: "text-rose-300", pos: "top-[28%] right-[-12px] sm:right-[-18px]" },
+  { name: "Node.js", color: "from-emerald-950/50 to-slate-900", border: "border-emerald-500/30", text: "text-emerald-300", pos: "bottom-[10%] right-[-8px] sm:right-[-10px]" },
 ];
 
 function GithubIcon({ className = "w-4 h-4" }: { className?: string }) {
@@ -35,31 +35,71 @@ function LinkedinIcon({ className = "w-4 h-4" }: { className?: string }) {
 
 export function IntroSection({ onNavigate }: IntroSectionProps) {
   return (
-    <div className="flex flex-col justify-between h-full gap-3.5 overflow-y-auto pr-1">
-      {/* ── Main 2-Column Hero Section ────────────────────────────── */}
-      <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 items-center flex-1">
+    <div className="flex flex-col justify-between h-full gap-4 overflow-y-auto pr-1">
+      {/* ── Main Hero Section (Responsive Grid / Stack) ───────────── */}
+      <div className="flex flex-col lg:grid lg:grid-cols-12 gap-6 items-center flex-1 py-1">
         
-        {/* Left Column: Bio & CTAs (7 Cols) */}
-        <div className="lg:col-span-7 flex flex-col justify-center gap-3.5">
+        {/* Mobile-Only Avatar Display at top for clean vertical flow */}
+        <div className="flex lg:hidden items-center justify-center pt-2">
+          <div className="relative w-40 h-40 sm:w-48 sm:h-48 flex items-center justify-center">
+            {/* Outer Rings */}
+            <div className="absolute inset-0 rounded-full border border-dashed border-amber-400/20 animate-[spin_60s_linear_infinite]" />
+            <div className="absolute inset-4 rounded-full border border-white/10" />
+
+            {/* Ambient Bloom */}
+            <div 
+              className="absolute inset-6 rounded-full opacity-60 pointer-events-none"
+              style={{
+                background: "radial-gradient(circle, rgba(245, 158, 11, 0.4) 0%, rgba(34, 211, 238, 0.15) 50%, transparent 75%)",
+                filter: "blur(14px)",
+              }}
+            />
+
+            {/* Avatar Frame */}
+            <div className="relative z-10 w-28 h-28 sm:w-32 sm:h-32 rounded-full p-1 bg-gradient-to-tr from-amber-500/50 via-zinc-700/50 to-cyan-500/50 shadow-lg">
+              <div className="w-full h-full rounded-full overflow-hidden bg-[#121215] border border-white/10 relative flex items-center justify-center">
+                <Image
+                  src="/photo/Enamul_photo_transparent.png"
+                  alt="MD Enamul Haque"
+                  width={200}
+                  height={200}
+                  priority
+                  className="w-full h-full object-cover object-top scale-105"
+                />
+              </div>
+            </div>
+
+            {/* Mini Orbital Nodes on Mobile */}
+            <span className="absolute top-0 right-2 px-2 py-0.5 rounded-full text-[9px] font-mono bg-zinc-900 border border-white/15 text-zinc-200">
+              Next.js
+            </span>
+            <span className="absolute bottom-0 left-2 px-2 py-0.5 rounded-full text-[9px] font-mono bg-zinc-900 border border-white/15 text-cyan-300">
+              PostgreSQL
+            </span>
+          </div>
+        </div>
+
+        {/* Text & CTAs (7 Cols on Desktop) */}
+        <div className="w-full lg:col-span-7 flex flex-col justify-center gap-3 sm:gap-3.5">
           {/* Welcome Tag */}
           <div className="flex items-center gap-2">
-            <span className="w-6 h-[2px] bg-amber-400 rounded-full" />
-            <span className="text-[11px] font-mono tracking-widest uppercase text-amber-400 font-semibold">
+            <span className="w-5 sm:w-6 h-[2px] bg-amber-400 rounded-full" />
+            <span className="text-[10px] sm:text-[11px] font-mono tracking-widest uppercase text-amber-400 font-semibold">
               Welcome to my portfolio
             </span>
           </div>
 
           {/* Name & Title */}
-          <div className="flex flex-col gap-1">
-            <h1 className="text-3xl sm:text-4xl md:text-5xl font-extrabold font-heading tracking-tight text-white uppercase leading-[1.05]">
+          <div className="flex flex-col gap-0.5 sm:gap-1">
+            <h1 className="text-2xl sm:text-4xl md:text-5xl font-extrabold font-heading tracking-tight text-white uppercase leading-[1.08]">
               MD Enamul <br />
               <span className="text-transparent bg-clip-text bg-gradient-to-r from-zinc-100 via-amber-200 to-amber-400">
                 Haque
               </span>
             </h1>
-            <div className="text-sm sm:text-base font-mono font-bold tracking-wider text-cyan-400/90 uppercase mt-1 flex items-center gap-2">
+            <div className="text-xs sm:text-base font-mono font-bold tracking-wider text-cyan-400/90 uppercase mt-0.5 flex items-center gap-2">
               <span>Full-Stack Developer</span>
-              <span className="w-1.5 h-4 bg-amber-400 animate-pulse inline-block" />
+              <span className="w-1.5 h-3.5 bg-amber-400 animate-pulse inline-block" />
             </div>
           </div>
 
@@ -69,10 +109,10 @@ export function IntroSection({ onNavigate }: IntroSectionProps) {
           </p>
 
           {/* Action Buttons */}
-          <div className="flex flex-wrap items-center gap-3 pt-1">
+          <div className="flex flex-wrap items-center gap-2.5 sm:gap-3 pt-1">
             <button
               onClick={() => onNavigate("projects")}
-              className="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl text-xs font-mono font-bold bg-gradient-to-r from-amber-500 to-amber-600 hover:from-amber-400 hover:to-amber-500 text-zinc-950 shadow-md shadow-amber-500/20 transition-all duration-200 active:scale-[0.98]"
+              className="inline-flex items-center gap-2 px-4 sm:px-5 py-2 sm:py-2.5 rounded-xl text-xs font-mono font-bold bg-gradient-to-r from-amber-500 to-amber-600 hover:from-amber-400 hover:to-amber-500 text-zinc-950 shadow-md shadow-amber-500/20 transition-all duration-200 active:scale-[0.98]"
             >
               <span>VIEW PROJECTS</span>
               <ArrowRight className="w-3.5 h-3.5" />
@@ -80,26 +120,25 @@ export function IntroSection({ onNavigate }: IntroSectionProps) {
 
             <button
               onClick={() => onNavigate("contact")}
-              className="relative px-5 py-2.5 rounded-xl text-xs font-mono text-zinc-200 hover:text-white glass-panel hover:bg-white/[0.08] transition-all duration-200 group"
+              className="relative px-4 sm:px-5 py-2 sm:py-2.5 rounded-xl text-xs font-mono text-zinc-200 hover:text-white glass-panel hover:bg-white/[0.08] transition-all duration-200 group"
             >
-              {/* Bracket Accents */}
-              <span className="absolute top-1 left-1 w-2 h-2 border-t border-l border-amber-400/70" />
-              <span className="absolute bottom-1 right-1 w-2 h-2 border-b border-r border-amber-400/70" />
+              <span className="absolute top-1 left-1 w-1.5 h-1.5 border-t border-l border-amber-400/70" />
+              <span className="absolute bottom-1 right-1 w-1.5 h-1.5 border-b border-r border-amber-400/70" />
               <span>HIRE ME</span>
             </button>
           </div>
 
           {/* Social Links & Let's Connect */}
-          <div className="flex items-center gap-3 pt-1 border-t border-white/[0.06]">
+          <div className="flex items-center gap-2.5 sm:gap-3 pt-1 border-t border-white/[0.06]">
             <div className="flex items-center gap-1.5">
               <a
                 href="https://github.com/EnamulBokshi"
                 target="_blank"
                 rel="noopener noreferrer"
                 title="GitHub"
-                className="w-8 h-8 rounded-lg glass-panel hover:bg-white/10 text-zinc-400 hover:text-white flex items-center justify-center transition-colors"
+                className="w-7 h-7 sm:w-8 sm:h-8 rounded-lg glass-panel hover:bg-white/10 text-zinc-400 hover:text-white flex items-center justify-center transition-colors"
               >
-                <GithubIcon className="w-4 h-4" />
+                <GithubIcon className="w-3.5 h-3.5 sm:w-4 sm:h-4" />
               </a>
 
               <a
@@ -107,37 +146,36 @@ export function IntroSection({ onNavigate }: IntroSectionProps) {
                 target="_blank"
                 rel="noopener noreferrer"
                 title="LinkedIn"
-                className="w-8 h-8 rounded-lg glass-panel hover:bg-white/10 text-zinc-400 hover:text-white flex items-center justify-center transition-colors"
+                className="w-7 h-7 sm:w-8 sm:h-8 rounded-lg glass-panel hover:bg-white/10 text-zinc-400 hover:text-white flex items-center justify-center transition-colors"
               >
-                <LinkedinIcon className="w-4 h-4" />
+                <LinkedinIcon className="w-3.5 h-3.5 sm:w-4 sm:h-4" />
               </a>
 
               <button
                 onClick={() => onNavigate("contact")}
                 title="Contact Direct"
-                className="w-8 h-8 rounded-lg glass-panel hover:bg-white/10 text-zinc-400 hover:text-white flex items-center justify-center transition-colors"
+                className="w-7 h-7 sm:w-8 sm:h-8 rounded-lg glass-panel hover:bg-white/10 text-zinc-400 hover:text-white flex items-center justify-center transition-colors"
               >
-                <Mail className="w-4 h-4" />
+                <Mail className="w-3.5 h-3.5 sm:w-4 sm:h-4" />
               </button>
             </div>
 
-            <span className="text-[10px] font-mono tracking-widest text-zinc-500 uppercase">
+            <span className="text-[9px] sm:text-[10px] font-mono tracking-widest text-zinc-500 uppercase">
               | Let&apos;s Connect
             </span>
           </div>
         </div>
 
-        {/* Right Column: Orbital Avatar Showcase (5 Cols) */}
-        <div className="lg:col-span-5 flex items-center justify-center relative py-4 sm:py-0">
-          {/* Orbital Container */}
+        {/* Desktop-Only Orbital Avatar Showcase (5 Cols) */}
+        <div className="hidden lg:flex lg:col-span-5 items-center justify-center relative py-0">
           <div className="relative w-64 h-64 sm:w-72 sm:h-72 md:w-80 md:h-80 flex items-center justify-center">
             
-            {/* Outer Rotating Orbital Track Ring */}
+            {/* Outer Rings */}
             <div className="absolute inset-0 rounded-full border border-white/[0.08] pointer-events-none" />
             <div className="absolute inset-4 rounded-full border border-dashed border-amber-400/20 pointer-events-none animate-[spin_60s_linear_infinite]" />
             <div className="absolute inset-8 rounded-full border border-white/[0.06] pointer-events-none" />
 
-            {/* Ambient Backlight Bloom behind Avatar */}
+            {/* Ambient Bloom */}
             <div 
               className="absolute inset-10 rounded-full opacity-60 pointer-events-none"
               style={{
@@ -176,31 +214,31 @@ export function IntroSection({ onNavigate }: IntroSectionProps) {
       </div>
 
       {/* ── Bottom Metric Strip ──────────────────────────────────── */}
-      <div className="grid grid-cols-2 sm:grid-cols-4 gap-2 pt-2 border-t border-white/[0.08] text-zinc-400 select-none">
-        <div className="p-2.5 rounded-xl bg-white/[0.02] border border-white/[0.05] flex items-center gap-2.5">
-          <div className="text-xl sm:text-2xl font-extrabold font-heading text-amber-400">2+</div>
-          <div className="text-[10px] font-mono uppercase tracking-wider text-zinc-400 leading-tight">
+      <div className="grid grid-cols-2 sm:grid-cols-4 gap-2 pt-2 border-t border-white/[0.08] text-zinc-400 select-none shrink-0">
+        <div className="p-2 sm:p-2.5 rounded-xl bg-white/[0.02] border border-white/[0.05] flex items-center gap-2 sm:gap-2.5">
+          <div className="text-lg sm:text-2xl font-extrabold font-heading text-amber-400">2+</div>
+          <div className="text-[9px] sm:text-[10px] font-mono uppercase tracking-wider text-zinc-400 leading-tight">
             Years <br /> Experience
           </div>
         </div>
 
-        <div className="p-2.5 rounded-xl bg-white/[0.02] border border-white/[0.05] flex items-center gap-2.5">
-          <div className="text-xl sm:text-2xl font-extrabold font-heading text-zinc-100">10+</div>
-          <div className="text-[10px] font-mono uppercase tracking-wider text-zinc-400 leading-tight">
+        <div className="p-2 sm:p-2.5 rounded-xl bg-white/[0.02] border border-white/[0.05] flex items-center gap-2 sm:gap-2.5">
+          <div className="text-lg sm:text-2xl font-extrabold font-heading text-zinc-100">10+</div>
+          <div className="text-[9px] sm:text-[10px] font-mono uppercase tracking-wider text-zinc-400 leading-tight">
             Projects <br /> Completed
           </div>
         </div>
 
-        <div className="p-2.5 rounded-xl bg-white/[0.02] border border-white/[0.05] flex items-center gap-2.5">
-          <div className="text-xl sm:text-2xl font-extrabold font-heading text-zinc-100">B.Sc</div>
-          <div className="text-[10px] font-mono uppercase tracking-wider text-zinc-400 leading-tight">
+        <div className="p-2 sm:p-2.5 rounded-xl bg-white/[0.02] border border-white/[0.05] flex items-center gap-2 sm:gap-2.5">
+          <div className="text-lg sm:text-2xl font-extrabold font-heading text-zinc-100">B.Sc</div>
+          <div className="text-[9px] sm:text-[10px] font-mono uppercase tracking-wider text-zinc-400 leading-tight">
             Computer <br /> Science
           </div>
         </div>
 
-        <div className="p-2.5 rounded-xl bg-white/[0.02] border border-white/[0.05] flex items-center gap-2.5">
-          <div className="text-xl sm:text-2xl font-extrabold font-heading text-emerald-400">100%</div>
-          <div className="text-[10px] font-mono uppercase tracking-wider text-zinc-400 leading-tight">
+        <div className="p-2 sm:p-2.5 rounded-xl bg-white/[0.02] border border-white/[0.05] flex items-center gap-2 sm:gap-2.5">
+          <div className="text-lg sm:text-2xl font-extrabold font-heading text-emerald-400">100%</div>
+          <div className="text-[9px] sm:text-[10px] font-mono uppercase tracking-wider text-zinc-400 leading-tight">
             Production <br /> Reliability
           </div>
         </div>

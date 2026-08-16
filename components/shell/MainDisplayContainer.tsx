@@ -4,7 +4,10 @@ import { useState, useEffect, useRef, useCallback } from "react";
 import { AnimatePresence, motion } from "framer-motion";
 import { TopDocker, NAV_SECTIONS } from "../nav/TopDocker";
 import { SideSectionIndicator } from "../nav/SideSectionIndicator";
-import { SideBelt } from "../belts/SideBelt";
+import { SideBelt, type BeltEffectMode } from "../belts/SideBelt";
+import { BeltEffectControl } from "../belts/BeltEffectControl";
+import { GeneratedBorderFrame } from "./GeneratedBorderFrame";
+import { RenderProgressCounter } from "./RenderProgressCounter";
 import { IntroSection } from "../sections/IntroSection";
 import { ProjectsSection } from "../sections/ProjectsSection";
 import { ExperienceSection } from "../sections/ExperienceSection";
@@ -47,9 +50,51 @@ const DEFAULT_RIGHT_BELT = [
 export function MainDisplayContainer({ initialData }: MainDisplayContainerProps) {
   const [activeSectionIndex, setActiveSectionIndex] = useState(0);
   const [isTransitioning, setIsTransitioning] = useState(false);
+  const [renderProgress, setRenderProgress] = useState(0);
+  const [isRendering, setIsRendering] = useState(true);
+  const [beltEffect, setBeltEffect] = useState<BeltEffectMode>(
+    (initialData.themeConfig?.beltEffect as BeltEffectMode) || "plasma-prism"
+  );
   const touchStartY = useRef<number | null>(null);
 
   const activeSection = NAV_SECTIONS[activeSectionIndex] || NAV_SECTIONS[0];
+
+  // Trigger 0% -> 100% Smooth Render Counting on Mount and Section Switch
+  useEffect(() => {
+    setIsRendering(true);
+    setRenderProgress(0);
+
+    const startTime = performance.now();
+    const duration = 550; // ms for fast, smooth countdown
+    let animationFrameId: number;
+
+    const tick = (now: number) => {
+      const elapsed = now - startTime;
+      const progressRatio = Math.min(elapsed / duration, 1);
+      
+      // Easing curve (ease-out cubic for realistic digital scan acceleration)
+      const easedProgress = 1 - Math.pow(1 - progressRatio, 3);
+      const currentVal = Math.round(easedProgress * 100);
+
+      setRenderProgress(currentVal);
+
+      if (progressRatio < 1) {
+        animationFrameId = requestAnimationFrame(tick);
+      } else {
+        setRenderProgress(100);
+        // Small graceful pause at 100% before vanishing counter
+        setTimeout(() => {
+          setIsRendering(false);
+        }, 160);
+      }
+    };
+
+    animationFrameId = requestAnimationFrame(tick);
+
+    return () => {
+      if (animationFrameId) cancelAnimationFrame(animationFrameId);
+    };
+  }, [activeSectionIndex]);
 
   const navigateToSectionIndex = useCallback((newIndex: number) => {
     if (newIndex < 0 || newIndex >= NAV_SECTIONS.length) return;
@@ -168,9 +213,9 @@ export function MainDisplayContainer({ initialData }: MainDisplayContainerProps)
         onSelectSection={handleSelectSection}
       />
 
-      {/* 2. Left and Right Endless Vertical Belts */}
-      <SideBelt side="left" items={leftSkills} />
-      <SideBelt side="right" items={rightBelts} />
+      {/* 2. Left and Right Endless Vertical Belts with Active Effect */}
+      <SideBelt side="left" items={leftSkills} effect={beltEffect} />
+      <SideBelt side="right" items={rightBelts} effect={beltEffect} />
 
       {/* 3. Side Section Indicator (Matching user reference) */}
       <SideSectionIndicator
@@ -179,21 +224,31 @@ export function MainDisplayContainer({ initialData }: MainDisplayContainerProps)
         onNavigate={navigateToSectionIndex}
       />
 
-      {/* 4. THE MAIN DISPLAY: Centered with 15–20% margin on all sides */}
-      <div className="relative z-10 w-[92vw] sm:w-[84vw] md:w-[76vw] lg:w-[68vw] h-[78vh] sm:h-[75vh] md:h-[72vh] max-w-5xl rounded-2xl sm:rounded-3xl glass-panel border border-white/[0.08] shadow-[0_24px_80px_rgba(0,0,0,0.8)] backdrop-blur-2xl p-5 sm:p-8 md:p-10 flex flex-col justify-between overflow-hidden bg-[#121215]/75">
-        {/* Subtle Frame Highlight Line */}
-        <div className="absolute top-0 left-12 right-12 h-[1px] bg-gradient-to-r from-transparent via-amber-500/20 to-transparent" />
-        
-        {/* Animated Parallax Section Content */}
-        <div className="relative w-full h-full flex-1 overflow-hidden select-text">
+      {/* 4. THE MAIN DISPLAY: Totally Transparent with Generated Dynamic Borders */}
+      <div className="relative z-10 w-[95vw] sm:w-[88vw] md:w-[80vw] lg:w-[70vw] h-[82vh] sm:h-[78vh] md:h-[74vh] max-w-5xl rounded-3xl p-4 sm:p-7 md:p-9 mt-8 sm:mt-10 md:mt-0 flex flex-col justify-between overflow-hidden bg-transparent">
+        {/* Dynamic Generated SVG Borders (Matching Reference Photo) */}
+        <GeneratedBorderFrame
+          progress={renderProgress}
+          isRendering={isRendering}
+          renderKey={activeSectionIndex}
+        />
+
+        {/* Dynamic Bottom-Left 0-100% Render Percentage Counter (Vanishes on 100%) */}
+        <RenderProgressCounter
+          progress={renderProgress}
+          isVisible={isRendering}
+        />
+
+        {/* Animated & Flickering Section Content */}
+        <div className="relative w-full h-full flex-1 overflow-hidden select-text z-10">
           <AnimatePresence mode="wait">
             <motion.div
               key={activeSection.id}
-              initial={{ opacity: 0, y: 20, scale: 0.98 }}
+              initial={{ opacity: 0, y: 15, scale: 0.985 }}
               animate={{ opacity: 1, y: 0, scale: 1 }}
-              exit={{ opacity: 0, y: -20, scale: 0.98 }}
+              exit={{ opacity: 0, y: -15, scale: 0.985 }}
               transition={{ duration: 0.35, ease: [0.22, 1, 0.36, 1] }}
-              className="w-full h-full flex flex-col"
+              className={`w-full h-full flex flex-col ${isRendering ? "animate-render-flicker" : ""}`}
             >
               {activeSection.id === "intro" && (
                 <IntroSection
@@ -223,19 +278,26 @@ export function MainDisplayContainer({ initialData }: MainDisplayContainerProps)
           </AnimatePresence>
         </div>
 
-        {/* Display Frame Footer Meta */}
-        <div className="flex items-center justify-between pt-3 border-t border-white/[0.06] text-[11px] font-mono text-zinc-500 select-none">
+        {/* Display Frame Footer Meta (Transparent Minimalist Style) */}
+        <div className="relative z-10 flex items-center justify-between pt-3 border-t border-white/[0.08] text-[11px] font-mono text-zinc-400 select-none">
           <div className="flex items-center gap-2">
-            <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 shadow-[0_0_6px_rgba(16,185,129,0.8)]" />
-            <span className="text-zinc-400">Section {activeSection.number} · {activeSection.label}</span>
+            <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 shadow-[0_0_8px_rgba(52,211,153,0.8)] animate-pulse" />
+            <span className="text-zinc-300 font-medium">Section {activeSection.number} · {activeSection.label}</span>
           </div>
 
           <div className="flex items-center gap-3">
-            <span className="hidden sm:inline text-zinc-600">Scroll or click Docker to switch</span>
-            <span className="text-amber-400 font-bold">{activeSection.number} / {String(NAV_SECTIONS.length).padStart(2, "0")}</span>
+            <span className="hidden sm:inline text-zinc-500">Scroll or click Docker to switch</span>
+            <span className="text-amber-400 font-bold tracking-wider">{activeSection.number} / {String(NAV_SECTIONS.length).padStart(2, "0")}</span>
           </div>
         </div>
       </div>
+
+      {/* 5. Belt Light Effect Control (Admin / Interactive Switcher) */}
+      <BeltEffectControl
+        currentEffect={beltEffect}
+        onEffectChange={setBeltEffect}
+      />
     </div>
   );
 }
+

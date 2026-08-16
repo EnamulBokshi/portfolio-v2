@@ -1,6 +1,8 @@
 import { prisma } from "@/lib/prisma";
 import type { ThemeConfig } from "@prisma/client";
 
+export type BeltEffectType = "plasma-prism" | "magnifier" | "deep-light" | "text-focus";
+
 export const DEFAULT_THEME_CONFIG: Omit<ThemeConfig, "id" | "updatedAt"> = {
   isActive: true,
   accentColor: "#F59E0B", // Warm Amber
@@ -8,6 +10,7 @@ export const DEFAULT_THEME_CONFIG: Omit<ThemeConfig, "id" | "updatedAt"> = {
   bodyBackgroundMode: "gradient-mesh",
   bodyBaseColor: "#09090b", // Deep Obsidian Zinc
   bodySecondaryColor: "#121215", // Warm Charcoal
+  beltEffect: "plasma-prism",
   glassBlurPx: 20,
   glassOpacity: 0.05,
   glassBorderOpacity: 0.08,
