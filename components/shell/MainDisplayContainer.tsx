@@ -3,6 +3,7 @@
 import { useState, useEffect, useRef, useCallback } from "react";
 import { AnimatePresence, motion } from "framer-motion";
 import { TopDocker, NAV_SECTIONS } from "../nav/TopDocker";
+import { SideSectionIndicator } from "../nav/SideSectionIndicator";
 import { SideBelt } from "../belts/SideBelt";
 import { IntroSection } from "../sections/IntroSection";
 import { ProjectsSection } from "../sections/ProjectsSection";
@@ -171,30 +172,12 @@ export function MainDisplayContainer({ initialData }: MainDisplayContainerProps)
       <SideBelt side="left" items={leftSkills} />
       <SideBelt side="right" items={rightBelts} />
 
-      {/* 3. Side Dot Navigator */}
-      <div 
-        aria-label="Section Indicator"
-        className="fixed right-14 sm:right-20 top-1/2 -translate-y-1/2 z-30 hidden xl:flex flex-col items-center gap-3 select-none"
-      >
-        {NAV_SECTIONS.map((sec, idx) => (
-          <button
-            key={sec.id}
-            onClick={() => navigateToSectionIndex(idx)}
-            className="group relative flex items-center justify-center p-1"
-          >
-            <span
-              className={`w-1.5 h-1.5 rounded-full transition-all duration-300 ${
-                activeSectionIndex === idx
-                  ? "bg-amber-400 scale-150 shadow-[0_0_8px_rgba(245,158,11,0.9)]"
-                  : "bg-zinc-700 group-hover:bg-zinc-400"
-              }`}
-            />
-            <span className="absolute right-6 scale-0 group-hover:scale-100 transition-all duration-150 px-2 py-0.5 rounded text-[10px] font-mono bg-zinc-900 text-zinc-300 border border-white/10 whitespace-nowrap pointer-events-none">
-              {sec.number} {sec.label}
-            </span>
-          </button>
-        ))}
-      </div>
+      {/* 3. Side Section Indicator (Matching user reference) */}
+      <SideSectionIndicator
+        sections={NAV_SECTIONS}
+        activeSectionIndex={activeSectionIndex}
+        onNavigate={navigateToSectionIndex}
+      />
 
       {/* 4. THE MAIN DISPLAY: Centered with 15–20% margin on all sides */}
       <div className="relative z-10 w-[92vw] sm:w-[84vw] md:w-[76vw] lg:w-[68vw] h-[78vh] sm:h-[75vh] md:h-[72vh] max-w-5xl rounded-2xl sm:rounded-3xl glass-panel border border-white/[0.08] shadow-[0_24px_80px_rgba(0,0,0,0.8)] backdrop-blur-2xl p-5 sm:p-8 md:p-10 flex flex-col justify-between overflow-hidden bg-[#121215]/75">
