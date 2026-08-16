@@ -1,6 +1,6 @@
 "use client";
 
-import { LayoutDashboard, FolderGit2, Trophy, Wrench, Sliders, Mail, FileText, ArrowLeft, Palette } from "lucide-react";
+import { LayoutDashboard, FolderGit2, Briefcase, Trophy, Wrench, Sliders, Mail, FileText, ArrowLeft, Palette } from "lucide-react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 
@@ -19,6 +19,7 @@ export default function AdminLayout({
   const navItems = [
     { label: "Overview", href: "/admin", icon: LayoutDashboard },
     { label: "Projects", href: "/admin/projects", icon: FolderGit2 },
+    { label: "Experience", href: "/admin/experience", icon: Briefcase },
     { label: "Achievements", href: "/admin/achievements", icon: Trophy },
     { label: "Skills", href: "/admin/skills", icon: Wrench },
     { label: "Belts", href: "/admin/belts", icon: Sliders },
@@ -28,9 +29,9 @@ export default function AdminLayout({
   ];
 
   return (
-    <div className="min-h-screen bg-[#020617] text-[#F8FAFC] flex flex-col md:flex-row">
+    <div className="h-screen w-screen bg-[#020617] text-[#F8FAFC] flex flex-col md:flex-row overflow-hidden relative z-10">
       {/* Sidebar Nav */}
-      <aside className="w-full md:w-64 border-b md:border-b-0 md:border-r border-white/10 p-5 flex flex-col justify-between shrink-0 bg-black/40 backdrop-blur-xl">
+      <aside className="w-full md:w-64 border-b md:border-b-0 md:border-r border-white/10 p-5 flex flex-col justify-between shrink-0 bg-black/60 backdrop-blur-2xl h-full overflow-y-auto z-20">
         <div>
           <div className="flex items-center gap-3 mb-8 px-2">
             <div className="w-8 h-8 rounded-lg bg-gradient-to-tr from-[#7C3AED] to-[#22D3EE] p-[1px]">
@@ -78,7 +79,7 @@ export default function AdminLayout({
       </aside>
 
       {/* Main Content Area */}
-      <main className="flex-1 p-6 sm:p-10 max-w-7xl mx-auto w-full">
+      <main className="flex-1 p-6 sm:p-10 max-w-7xl mx-auto w-full h-full overflow-y-auto">
         {children}
       </main>
     </div>
