@@ -33,7 +33,9 @@
     background-color: var(--bg-base);
     color: var(--text-primary);
     font-family: var(--font-sans);
-    overflow-x: hidden;
+    overflow: hidden;
+    height: 100vh;
+    width: 100vw;
   }
 
   h1, h2, h3, h4, h5, h6 {
@@ -94,20 +96,36 @@
   background: rgba(124, 58, 237, 0.5);
 }
 
-/* Ticker Animation for Belts */
+/* Ticker & Vertical Belt Animations */
 @keyframes ticker {
-  0% {
-    transform: translateX(0);
-  }
-  100% {
-    transform: translateX(-50%);
-  }
+  0% { transform: translateX(0); }
+  100% { transform: translateX(-50%); }
+}
+
+@keyframes marquee-up {
+  0% { transform: translateY(0); }
+  100% { transform: translateY(-50%); }
+}
+
+@keyframes marquee-down {
+  0% { transform: translateY(-50%); }
+  100% { transform: translateY(0); }
 }
 
 .animate-ticker {
   animation: ticker 35s linear infinite;
 }
 
+.animate-marquee-up {
+  animation: marquee-up 40s linear infinite;
+}
+
+.animate-marquee-down {
+  animation: marquee-down 40s linear infinite;
+}
+
+.animate-marquee-up:hover,
+.animate-marquee-down:hover,
 .animate-ticker:hover {
   animation-play-state: paused;
 }

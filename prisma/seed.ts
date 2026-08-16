@@ -1,7 +1,15 @@
 import { PrismaClient, BeltContext } from "@prisma/client";
+import { PrismaPg } from "@prisma/adapter-pg";
+import { Pool } from "pg";
 import bcrypt from "bcryptjs";
+import dotenv from "dotenv";
 
-const prisma = new PrismaClient();
+dotenv.config();
+
+const connectionString = process.env.DATABASE_URL || "postgresql://postgres:password@localhost:5432/portfolio?schema=public";
+const pool = new Pool({ connectionString });
+const adapter = new PrismaPg(pool);
+const prisma = new PrismaClient({ adapter });
 
 async function main() {
   console.log("🌱 Starting database seed...");
@@ -91,22 +99,72 @@ async function main() {
   }
   console.log(`🎗️ Belt Items seeded (${defaultBelts.length} items)`);
 
-  // 5. Seed Starter Project
-  const existingProject = await prisma.project.findFirst();
-  if (!existingProject) {
-    await prisma.project.create({
-      data: {
-        slug: "interactive-portfolio-v2",
-        title: "Dynamic Interactive Portfolio",
-        summary: "Modern developer portfolio with real-time DB-backed content, glassmorphic UI, and interactive contact inbox.",
-        description: "A showcase portfolio built with Next.js App Router, Tailwind CSS v4, Framer Motion, and PostgreSQL. Features complete admin dashboard, custom session auth, and real-time email notification loops.",
-        techTags: ["Next.js", "React", "TypeScript", "Tailwind CSS", "Prisma", "PostgreSQL", "Docker"],
-        featured: true,
-        order: 1,
-      },
-    });
-    console.log("🚀 Sample Project seeded");
+  // 5. Seed Starter Projects (Multiple to showcase 3-primary + pagination)
+  const defaultProjects = [
+    {
+      slug: "interactive-portfolio-v2",
+      title: "Dynamic Interactive Portfolio",
+      summary: "Modern developer portfolio with real-time DB-backed content, glassmorphic UI, and interactive contact inbox.",
+      description: "A showcase portfolio built with Next.js App Router, Tailwind CSS v4, Framer Motion, and PostgreSQL. Features complete admin dashboard, custom session auth, and real-time email notification loops.",
+      techTags: ["Next.js", "React", "TypeScript", "Tailwind CSS", "Prisma", "PostgreSQL", "Docker"],
+      liveUrl: "https://enamul.dev",
+      repoUrl: "https://github.com/EnamulBokshi/portfolio-v2",
+      featured: true,
+      order: 1,
+    },
+    {
+      slug: "cloud-metrics-orchestrator",
+      title: "Cloud Infrastructure Observability",
+      summary: "Distributed microservices monitoring dashboard with real-time metrics telemetry and automated alerts.",
+      description: "High-throughput metric ingestion pipeline processing millions of events per minute using Node.js streams, Redis Pub/Sub, and PostgreSQL timeseries aggregations with glassmorphic charts.",
+      techTags: ["TypeScript", "Node.js", "Redis", "Docker", "PostgreSQL", "Tailwind CSS"],
+      liveUrl: "https://metrics.enamul.dev",
+      repoUrl: "https://github.com/EnamulBokshi/cloud-metrics",
+      featured: true,
+      order: 2,
+    },
+    {
+      slug: "realtime-collab-canvas",
+      title: "Real-time Collaboration Engine",
+      summary: "Multiplayer state synchronization canvas with conflict-free replicated data types (CRDTs).",
+      description: "Low-latency collaborative editor supporting live cursor presence, optimistic UI reconciliation, and end-to-end WebSocket persistence for distributed engineering teams.",
+      techTags: ["React", "WebSockets", "CRDTs", "TypeScript", "Tailwind CSS", "Next.js"],
+      liveUrl: "https://collab.enamul.dev",
+      repoUrl: "https://github.com/EnamulBokshi/collab-canvas",
+      featured: true,
+      order: 3,
+    },
+    {
+      slug: "ai-workflow-automation-agent",
+      title: "Autonomous AI Agent Pipeline",
+      summary: "Agentic workflow orchestrator executing multi-step LLM tool calling and code validation sandboxes.",
+      description: "Engineered scalable background task workers with priority queues, structured JSON validation with Zod, and resilient fallback strategies for autonomous generative AI pipelines.",
+      techTags: ["Next.js", "OpenAI / Gemini", "Zod", "Docker", "TypeScript", "PostgreSQL"],
+      liveUrl: "https://ai-agent.enamul.dev",
+      repoUrl: "https://github.com/EnamulBokshi/ai-agent-pipeline",
+      featured: false,
+      order: 4,
+    },
+    {
+      slug: "secure-auth-gateway",
+      title: "Zero-Trust Auth & Session Gateway",
+      summary: "High-performance cryptographic session verification proxy with rate limiting and audit logging.",
+      description: "Lightweight, edge-compatible authentication middleware enforcing JWT verification with jose, brute-force IP throttling, and seamless token rotation.",
+      techTags: ["Next.js 16 Proxy", "jose", "bcryptjs", "TypeScript", "Redis"],
+      liveUrl: "https://auth.enamul.dev",
+      repoUrl: "https://github.com/EnamulBokshi/secure-gateway",
+      featured: false,
+      order: 5,
+    },
+  ];
+
+  for (const proj of defaultProjects) {
+    const existing = await prisma.project.findFirst({ where: { slug: proj.slug } });
+    if (!existing) {
+      await prisma.project.create({ data: proj });
+    }
   }
+  console.log(`🚀 Projects seeded (${defaultProjects.length} projects)`);
 
   // 6. Seed Starter Achievement
   const existingAchievement = await prisma.achievement.findFirst();
