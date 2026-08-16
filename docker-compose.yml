@@ -1,0 +1,43 @@
+services:
+  postgres:
+    image: postgres:16-alpine
+    container_name: portfolio-postgres
+    restart: always
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgrespassword
+      POSTGRES_DB: portfolio
+    ports:
+      - "5432:5432"
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres -d portfolio"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: portfolio-app
+    restart: always
+    ports:
+      - "3000:3000"
+    environment:
+      - DATABASE_URL=postgresql://postgres:postgrespassword@postgres:5432/portfolio?schema=public
+      - AUTH_SECRET=super-secret-jwt-key-min-32-chars-long-please-change-in-production-12345
+      - RESEND_API_KEY=${RESEND_API_KEY:-re_placeholder}
+      - ADMIN_NOTIFICATION_EMAIL=${ADMIN_NOTIFICATION_EMAIL:-admin@enamul.dev}
+      - CONTACT_FROM_EMAIL=${CONTACT_FROM_EMAIL:-onboarding@resend.dev}
+      - BLOB_READ_WRITE_TOKEN=${BLOB_READ_WRITE_TOKEN:-placeholder}
+      - ADMIN_INITIAL_EMAIL=${ADMIN_INITIAL_EMAIL:-admin@enamul.dev}
+      - ADMIN_INITIAL_PASSWORD=${ADMIN_INITIAL_PASSWORD:-AdminPassword123!}
+    depends_on:
+      postgres:
+        condition: service_healthy
+
+volumes:
+  pgdata:
+    driver: local

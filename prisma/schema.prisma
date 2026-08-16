@@ -1,0 +1,139 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+// ── Auth ──────────────────────────────────────────────
+model AdminUser {
+  id           String   @id @default(cuid())
+  email        String   @unique
+  passwordHash String
+  createdAt    DateTime @default(now())
+}
+
+// ── Content ───────────────────────────────────────────
+model Project {
+  id          String         @id @default(cuid())
+  slug        String         @unique
+  title       String
+  summary     String
+  description String         @db.Text
+  techTags    String[]
+  images      ProjectImage[]
+  liveUrl     String?
+  repoUrl     String?
+  featured    Boolean        @default(false)
+  order       Int            @default(0)
+  createdAt   DateTime       @default(now())
+  updatedAt   DateTime       @updatedAt
+}
+
+model ProjectImage {
+  id        String  @id @default(cuid())
+  project   Project @relation(fields: [projectId], references: [id], onDelete: Cascade)
+  projectId String
+  url       String
+  alt       String?
+  order     Int     @default(0)
+}
+
+model Achievement {
+  id          String   @id @default(cuid())
+  title       String
+  description String   @db.Text
+  issuer      String?
+  date        DateTime
+  imageUrl    String?
+  link        String?
+  order       Int      @default(0)
+  createdAt   DateTime @default(now())
+}
+
+model Skill {
+  id          String  @id @default(cuid())
+  name        String
+  category    String
+  iconUrl     String?
+  proficiency Int?
+  order       Int     @default(0)
+}
+
+model BeltItem {
+  id         String      @id @default(cuid())
+  label      String
+  glyphUrl   String?
+  context    BeltContext @default(GLOBAL)
+  contextRef String?
+  order      Int         @default(0)
+  active     Boolean     @default(true)
+}
+
+enum BeltContext {
+  GLOBAL
+  PROJECT
+  SKILLS
+}
+
+model CV {
+  id           String   @id @default(cuid())
+  fileUrl      String
+  versionLabel String?
+  isActive     Boolean  @default(true)
+  uploadedAt   DateTime @default(now())
+}
+
+model ThemeConfig {
+  id                 String   @id @default(cuid())
+  isActive           Boolean  @default(true)
+  accentColor        String   @default("#7C3AED")
+  accentSecondary    String   @default("#22D3EE")
+  bodyBackgroundMode String   @default("gradient-mesh")
+  bodyBaseColor      String   @default("#020617")
+  bodySecondaryColor String   @default("#1e1b4b")
+  glassBlurPx        Int      @default(24)
+  glassOpacity       Float    @default(0.06)
+  glassBorderOpacity Float    @default(0.12)
+  fontHeading        String?  @default("Space Grotesk")
+  fontBody           String?  @default("Inter")
+  fontMono           String?  @default("JetBrains Mono")
+  updatedAt          DateTime @updatedAt
+}
+
+// ── Contact Inbox ─────────────────────────────────────
+model ContactMessage {
+  id        String         @id @default(cuid())
+  name      String
+  email     String
+  subject   String?
+  body      String         @db.Text
+  status    MessageStatus  @default(UNREAD)
+  ipAddress String?
+  createdAt DateTime       @default(now())
+  replies   MessageReply[]
+}
+
+model MessageReply {
+  id          String         @id @default(cuid())
+  message     ContactMessage @relation(fields: [messageId], references: [id], onDelete: Cascade)
+  messageId   String
+  bodyHtml    String         @db.Text
+  sentAt      DateTime       @default(now())
+  emailStatus EmailStatus    @default(PENDING)
+}
+
+enum MessageStatus {
+  UNREAD
+  READ
+  REPLIED
+  ARCHIVED
+  SPAM
+}
+
+enum EmailStatus {
+  PENDING
+  SENT
+  FAILED
+}
