@@ -3,14 +3,14 @@ import type { ThemeConfig } from "@prisma/client";
 
 export const DEFAULT_THEME_CONFIG: Omit<ThemeConfig, "id" | "updatedAt"> = {
   isActive: true,
-  accentColor: "#7C3AED",
-  accentSecondary: "#22D3EE",
+  accentColor: "#F59E0B", // Warm Amber
+  accentSecondary: "#FBBF24", // Champagne Gold
   bodyBackgroundMode: "gradient-mesh",
-  bodyBaseColor: "#020617",
-  bodySecondaryColor: "#1e1b4b",
-  glassBlurPx: 24,
-  glassOpacity: 0.06,
-  glassBorderOpacity: 0.12,
+  bodyBaseColor: "#09090b", // Deep Obsidian Zinc
+  bodySecondaryColor: "#121215", // Warm Charcoal
+  glassBlurPx: 20,
+  glassOpacity: 0.05,
+  glassBorderOpacity: 0.08,
   fontHeading: "Space Grotesk",
   fontBody: "Inter",
   fontMono: "JetBrains Mono",
@@ -38,7 +38,7 @@ export function generateThemeCssVariables(theme: ThemeConfig | null): Record<str
     "--bg-base": t.bodyBaseColor || DEFAULT_THEME_CONFIG.bodyBaseColor,
     "--bg-bloom": t.bodySecondaryColor || DEFAULT_THEME_CONFIG.bodySecondaryColor,
     "--glass-blur": `${t.glassBlurPx ?? DEFAULT_THEME_CONFIG.glassBlurPx}px`,
-    "--glass-bg": `rgba(255, 255, 255, ${t.glassOpacity ?? DEFAULT_THEME_CONFIG.glassOpacity})`,
+    "--glass-bg": `rgba(18, 18, 21, ${t.glassOpacity ?? DEFAULT_THEME_CONFIG.glassOpacity})`,
     "--glass-border": `rgba(255, 255, 255, ${t.glassBorderOpacity ?? DEFAULT_THEME_CONFIG.glassBorderOpacity})`,
   };
 }

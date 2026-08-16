@@ -7,20 +7,20 @@
     --font-sans: var(--font-body), 'Inter', sans-serif;
     --font-mono: var(--font-mono), 'JetBrains Mono', monospace;
 
-    /* Violet Signal Color Palette */
-    --bg-base: #020617;
-    --bg-bloom: #1e1b4b;
-    --accent-primary: #7C3AED;
-    --accent-secondary: #22D3EE;
-    --text-primary: #F8FAFC;
-    --text-muted: #94A3B8;
-    --status-success: #34D399;
-    --status-error: #FB7185;
+    /* Monochromatic Obsidian & Warm Amber Palette */
+    --bg-base: #09090b;
+    --bg-bloom: #121215;
+    --accent-primary: #F59E0B;
+    --accent-secondary: #FBBF24;
+    --text-primary: #F4F4F5;
+    --text-muted: #A1A1AA;
+    --status-success: #10B981;
+    --status-error: #F43F5E;
 
-    /* Glass tokens */
-    --glass-bg: rgba(255, 255, 255, 0.06);
-    --glass-border: rgba(255, 255, 255, 0.12);
-    --glass-blur: 24px;
+    /* Clean subtle glass tokens */
+    --glass-bg: rgba(18, 18, 21, 0.72);
+    --glass-border: rgba(255, 255, 255, 0.08);
+    --glass-blur: 20px;
   }
 }
 
@@ -40,7 +40,7 @@
 
   h1, h2, h3, h4, h5, h6 {
     font-family: var(--font-heading);
-    letter-spacing: -0.02em;
+    letter-spacing: -0.025em;
   }
 
   code, pre, .font-mono {
@@ -48,7 +48,7 @@
   }
 }
 
-/* Glassmorphism Surface Utility */
+/* Glassmorphic Panel Utility */
 .glass-panel {
   background: var(--glass-bg);
   backdrop-filter: blur(var(--glass-blur));
@@ -57,43 +57,42 @@
 }
 
 .glass-panel-hover {
-  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 .glass-panel-hover:hover {
-  background: rgba(255, 255, 255, 0.09);
-  border-color: rgba(255, 255, 255, 0.2);
-  transform: translateY(-2px);
-  box-shadow: 0 12px 30px -10px rgba(124, 58, 237, 0.15);
+  background: rgba(26, 26, 30, 0.85);
+  border-color: rgba(255, 255, 255, 0.16);
+  box-shadow: 0 16px 36px -12px rgba(0, 0, 0, 0.6);
 }
 
-/* Gradient Mesh Background */
+/* Obsidian Ambient Mesh Background */
 .gradient-mesh-bg {
-  background-color: #020617;
+  background-color: #09090b;
   background-image: 
-    radial-gradient(at 15% 15%, rgba(124, 58, 237, 0.22) 0px, transparent 50%),
-    radial-gradient(at 85% 25%, rgba(30, 27, 75, 0.45) 0px, transparent 60%),
-    radial-gradient(at 50% 80%, rgba(34, 211, 238, 0.12) 0px, transparent 50%);
+    radial-gradient(at 10% 10%, rgba(245, 158, 11, 0.07) 0px, transparent 45%),
+    radial-gradient(at 90% 20%, rgba(251, 191, 36, 0.04) 0px, transparent 50%),
+    radial-gradient(at 50% 85%, rgba(217, 119, 6, 0.05) 0px, transparent 50%);
   background-attachment: fixed;
 }
 
-/* Custom Smooth Scrollbar */
+/* Minimal Custom Scrollbar */
 ::-webkit-scrollbar {
-  width: 8px;
-  height: 8px;
+  width: 5px;
+  height: 5px;
 }
 
 ::-webkit-scrollbar-track {
-  background: #020617;
+  background: transparent;
 }
 
 ::-webkit-scrollbar-thumb {
-  background: rgba(255, 255, 255, 0.15);
+  background: rgba(255, 255, 255, 0.12);
   border-radius: 9999px;
 }
 
 ::-webkit-scrollbar-thumb:hover {
-  background: rgba(124, 58, 237, 0.5);
+  background: rgba(245, 158, 11, 0.4);
 }
 
 /* Ticker & Vertical Belt Animations */
@@ -117,11 +116,11 @@
 }
 
 .animate-marquee-up {
-  animation: marquee-up 40s linear infinite;
+  animation: marquee-up 45s linear infinite;
 }
 
 .animate-marquee-down {
-  animation: marquee-down 40s linear infinite;
+  animation: marquee-down 45s linear infinite;
 }
 
 .animate-marquee-up:hover,

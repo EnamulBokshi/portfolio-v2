@@ -137,10 +137,8 @@ export function MainDisplayContainer({ initialData }: MainDisplayContainerProps)
 
       if (Math.abs(deltaY) > 50) {
         if (deltaY > 0) {
-          // Swiped Up -> Next Section
           setActiveSectionIndex((prev) => Math.min(prev + 1, NAV_SECTIONS.length - 1));
         } else {
-          // Swiped Down -> Previous Section
           setActiveSectionIndex((prev) => Math.max(prev - 1, 0));
         }
       }
@@ -155,7 +153,6 @@ export function MainDisplayContainer({ initialData }: MainDisplayContainerProps)
     };
   }, []);
 
-  // Prepare side belt lists
   const leftSkills = initialData.skills.length > 0
     ? initialData.skills.map((s) => s.name)
     : DEFAULT_LEFT_SKILLS;
@@ -165,7 +162,7 @@ export function MainDisplayContainer({ initialData }: MainDisplayContainerProps)
     : DEFAULT_RIGHT_BELT;
 
   return (
-    <div className="relative w-full h-screen overflow-hidden flex flex-col items-center justify-center select-none">
+    <div className="relative w-full h-screen overflow-hidden flex flex-col items-center justify-center select-none bg-[#09090b]">
       {/* 1. Top Menu Docker */}
       <TopDocker
         activeSection={activeSection.id}
@@ -179,7 +176,7 @@ export function MainDisplayContainer({ initialData }: MainDisplayContainerProps)
       {/* 3. Side Dot Navigator */}
       <div 
         aria-label="Section Indicator"
-        className="fixed right-16 sm:right-24 top-1/2 -translate-y-1/2 z-30 hidden xl:flex flex-col items-center gap-3 select-none"
+        className="fixed right-14 sm:right-20 top-1/2 -translate-y-1/2 z-30 hidden xl:flex flex-col items-center gap-3 select-none"
       >
         {NAV_SECTIONS.map((sec, idx) => (
           <button
@@ -188,13 +185,13 @@ export function MainDisplayContainer({ initialData }: MainDisplayContainerProps)
             className="group relative flex items-center justify-center p-1"
           >
             <span
-              className={`w-2 h-2 rounded-full transition-all duration-300 ${
+              className={`w-1.5 h-1.5 rounded-full transition-all duration-300 ${
                 activeSectionIndex === idx
-                  ? "bg-cyan-400 scale-150 shadow-[0_0_10px_rgba(34,211,238,1)]"
-                  : "bg-white/20 group-hover:bg-white/60"
+                  ? "bg-amber-400 scale-150 shadow-[0_0_8px_rgba(245,158,11,0.9)]"
+                  : "bg-zinc-700 group-hover:bg-zinc-400"
               }`}
             />
-            <span className="absolute right-6 scale-0 group-hover:scale-100 transition-all duration-150 px-2 py-0.5 rounded text-[10px] font-mono bg-slate-900/90 text-slate-300 border border-white/10 whitespace-nowrap pointer-events-none">
+            <span className="absolute right-6 scale-0 group-hover:scale-100 transition-all duration-150 px-2 py-0.5 rounded text-[10px] font-mono bg-zinc-900 text-zinc-300 border border-white/10 whitespace-nowrap pointer-events-none">
               {sec.number} {sec.label}
             </span>
           </button>
@@ -202,19 +199,19 @@ export function MainDisplayContainer({ initialData }: MainDisplayContainerProps)
       </div>
 
       {/* 4. THE MAIN DISPLAY: Centered with 15–20% margin on all sides */}
-      <div className="relative z-10 w-[92vw] sm:w-[84vw] md:w-[76vw] lg:w-[68vw] h-[78vh] sm:h-[75vh] md:h-[72vh] max-w-5xl rounded-2xl sm:rounded-3xl glass-panel border border-white/15 shadow-[0_20px_60px_rgba(0,0,0,0.8)] backdrop-blur-2xl p-5 sm:p-8 md:p-10 flex flex-col justify-between overflow-hidden">
-        {/* Subtle Frame Header Line */}
-        <div className="absolute top-0 left-12 right-12 h-[1px] bg-gradient-to-r from-transparent via-purple-500/40 to-transparent" />
+      <div className="relative z-10 w-[92vw] sm:w-[84vw] md:w-[76vw] lg:w-[68vw] h-[78vh] sm:h-[75vh] md:h-[72vh] max-w-5xl rounded-2xl sm:rounded-3xl glass-panel border border-white/[0.08] shadow-[0_24px_80px_rgba(0,0,0,0.8)] backdrop-blur-2xl p-5 sm:p-8 md:p-10 flex flex-col justify-between overflow-hidden bg-[#121215]/75">
+        {/* Subtle Frame Highlight Line */}
+        <div className="absolute top-0 left-12 right-12 h-[1px] bg-gradient-to-r from-transparent via-amber-500/20 to-transparent" />
         
         {/* Animated Parallax Section Content */}
         <div className="relative w-full h-full flex-1 overflow-hidden select-text">
           <AnimatePresence mode="wait">
             <motion.div
               key={activeSection.id}
-              initial={{ opacity: 0, y: 30, scale: 0.97 }}
+              initial={{ opacity: 0, y: 20, scale: 0.98 }}
               animate={{ opacity: 1, y: 0, scale: 1 }}
-              exit={{ opacity: 0, y: -30, scale: 0.97 }}
-              transition={{ duration: 0.4, ease: [0.22, 1, 0.36, 1] }}
+              exit={{ opacity: 0, y: -20, scale: 0.98 }}
+              transition={{ duration: 0.35, ease: [0.22, 1, 0.36, 1] }}
               className="w-full h-full flex flex-col"
             >
               {activeSection.id === "intro" && (
@@ -240,15 +237,15 @@ export function MainDisplayContainer({ initialData }: MainDisplayContainerProps)
         </div>
 
         {/* Display Frame Footer Meta */}
-        <div className="flex items-center justify-between pt-3 border-t border-white/10 text-[11px] font-mono text-slate-500 select-none">
+        <div className="flex items-center justify-between pt-3 border-t border-white/[0.06] text-[11px] font-mono text-zinc-500 select-none">
           <div className="flex items-center gap-2">
-            <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 shadow-[0_0_6px_rgba(52,211,153,0.8)]" />
-            <span className="text-slate-400">Section {activeSection.number} · {activeSection.label}</span>
+            <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 shadow-[0_0_6px_rgba(16,185,129,0.8)]" />
+            <span className="text-zinc-400">Section {activeSection.number} · {activeSection.label}</span>
           </div>
 
           <div className="flex items-center gap-3">
-            <span className="hidden sm:inline">Scroll or click Docker to navigate</span>
-            <span className="text-purple-400 font-bold">{activeSection.number} / 05</span>
+            <span className="hidden sm:inline text-zinc-600">Scroll or click Docker to switch</span>
+            <span className="text-amber-400 font-bold">{activeSection.number} / 05</span>
           </div>
         </div>
       </div>
