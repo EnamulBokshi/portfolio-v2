@@ -181,6 +181,84 @@ async function main() {
     console.log("🏆 Sample Achievement seeded");
   }
 
+  // 7. Seed Work Experiences
+  const defaultExperiences = [
+    {
+      role: "Lead Full Stack Engineer",
+      company: "HighScale Cloud Systems",
+      companyUrl: "https://example.com",
+      location: "Remote / Global",
+      startDate: new Date("2023-01-01"),
+      endDate: null,
+      current: true,
+      description: "Leading the core architectural design and implementation of distributed web platforms and real-time dashboard analytics.",
+      highlights: [
+        "Architected scalable Next.js App Router applications serving 500k+ monthly active users with sub-100ms response times.",
+        "Engineered type-safe microservices with PostgreSQL, Prisma, Redis cache invalidation, and Docker containerization.",
+        "Implemented secure JWT session verification pipelines reducing latency by 45% over legacy middleware."
+      ],
+      techTags: ["Next.js", "TypeScript", "PostgreSQL", "Docker", "Redis", "Tailwind CSS"],
+      order: 1,
+    },
+    {
+      role: "Senior Software Engineer",
+      company: "Apex Digital Solutions",
+      companyUrl: "https://example.com",
+      location: "Dhaka, Bangladesh",
+      startDate: new Date("2021-03-01"),
+      endDate: new Date("2022-12-31"),
+      current: false,
+      description: "Developed enterprise full-stack portals, RESTful & RPC APIs, and custom CRM systems with real-time websocket integrations.",
+      highlights: [
+        "Built responsive real-time data visualizers and collaborative workspace boards with React and WebSockets.",
+        "Designed resilient database schemas and automated migration workflows across multi-tenant PostgreSQL clusters.",
+        "Mentored a team of 6 engineers on TypeScript best practices, automated CI/CD pipelines, and clean architecture."
+      ],
+      techTags: ["React", "Node.js", "TypeScript", "PostgreSQL", "Prisma", "Docker"],
+      order: 2,
+    },
+    {
+      role: "Software Engineer",
+      company: "Innovate Tech Labs",
+      companyUrl: "https://example.com",
+      location: "Dhaka, Bangladesh",
+      startDate: new Date("2019-06-01"),
+      endDate: new Date("2021-02-28"),
+      current: false,
+      description: "Implemented high-performance frontend components, backend REST services, and database optimizations.",
+      highlights: [
+        "Delivered 10+ client web applications with modern frontend frameworks and reusable component libraries.",
+        "Refactored relational database queries and indexed slow execution paths, improving overall throughput by 30%."
+      ],
+      techTags: ["JavaScript", "React", "Node.js", "MySQL", "Express"],
+      order: 3,
+    },
+  ];
+
+  for (const exp of defaultExperiences) {
+    const existing = await prisma.experience.findFirst({
+      where: { role: exp.role, company: exp.company },
+    });
+    if (!existing) {
+      await prisma.experience.create({ data: exp });
+    }
+  }
+  console.log(`💼 Work Experiences seeded (${defaultExperiences.length} roles)`);
+
+  // 8. Seed Active CV
+  const existingCv = await prisma.cV.findFirst({ where: { isActive: true } });
+  if (!existingCv) {
+    await prisma.cV.create({
+      data: {
+        fileUrl: "https://example.com/enamul-bokshi-cv.pdf",
+        versionLabel: "Enamul_Bokshi_Resume_2026.pdf",
+        isActive: true,
+        uploadedAt: new Date(),
+      },
+    });
+    console.log("📄 Active CV seeded");
+  }
+
   console.log("✅ Seed completed successfully!");
 }
 

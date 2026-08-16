@@ -52,6 +52,22 @@ model Achievement {
   createdAt   DateTime @default(now())
 }
 
+model Experience {
+  id          String    @id @default(cuid())
+  role        String
+  company     String
+  companyUrl  String?
+  location    String?
+  startDate   DateTime
+  endDate     DateTime?
+  current     Boolean   @default(false)
+  description String    @db.Text
+  highlights  String[]
+  techTags    String[]
+  order       Int       @default(0)
+  createdAt   DateTime  @default(now())
+}
+
 model Skill {
   id          String  @id @default(cuid())
   name        String

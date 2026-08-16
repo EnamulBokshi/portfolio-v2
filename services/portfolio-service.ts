@@ -1,17 +1,18 @@
 import { prisma } from "@/lib/prisma";
-import type { Project, Skill, Achievement, BeltItem, CV } from "@prisma/client";
+import type { Project, Skill, Achievement, BeltItem, CV, Experience } from "@prisma/client";
 
 export interface HomePortfolioData {
   projects: (Project & { images?: { url: string; alt: string | null }[] })[];
   skills: Skill[];
   achievements: Achievement[];
+  experiences: Experience[];
   beltItems: BeltItem[];
   activeCv: CV | null;
 }
 
 export async function getHomePortfolioData(): Promise<HomePortfolioData> {
   try {
-    const [projects, skills, achievements, beltItems, activeCv] = await Promise.all([
+    const [projects, skills, achievements, experiences, beltItems, activeCv] = await Promise.all([
       prisma.project.findMany({
         include: { images: { orderBy: { order: "asc" } } },
         orderBy: { order: "asc" },
@@ -22,7 +23,10 @@ export async function getHomePortfolioData(): Promise<HomePortfolioData> {
       }),
       prisma.achievement.findMany({
         orderBy: { order: "asc" },
-        take: 3,
+        take: 5,
+      }),
+      prisma.experience.findMany({
+        orderBy: { order: "asc" },
       }),
       prisma.beltItem.findMany({
         where: { active: true },
@@ -38,6 +42,7 @@ export async function getHomePortfolioData(): Promise<HomePortfolioData> {
       projects,
       skills,
       achievements,
+      experiences,
       beltItems,
       activeCv,
     };
@@ -47,6 +52,7 @@ export async function getHomePortfolioData(): Promise<HomePortfolioData> {
       projects: [],
       skills: [],
       achievements: [],
+      experiences: [],
       beltItems: [],
       activeCv: null,
     };
@@ -71,4 +77,3 @@ export async function getLayoutShellData() {
     return { beltItems: [], activeCv: null };
   }
 }
-

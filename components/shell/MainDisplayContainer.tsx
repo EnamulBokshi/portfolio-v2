@@ -6,8 +6,10 @@ import { TopDocker, NAV_SECTIONS } from "../nav/TopDocker";
 import { SideBelt } from "../belts/SideBelt";
 import { IntroSection } from "../sections/IntroSection";
 import { ProjectsSection } from "../sections/ProjectsSection";
+import { ExperienceSection } from "../sections/ExperienceSection";
 import { SkillsSection } from "../sections/SkillsSection";
 import { AchievementsSection } from "../sections/AchievementsSection";
+import { CvSection } from "../sections/CvSection";
 import { ContactSection } from "../sections/ContactSection";
 import type { HomePortfolioData } from "@/services/portfolio-service";
 
@@ -67,7 +69,6 @@ export function MainDisplayContainer({ initialData }: MainDisplayContainerProps)
     let wheelTimeout: NodeJS.Timeout | null = null;
 
     const handleWheel = (e: WheelEvent) => {
-      // Check if target is inside an element that is scrolled internally
       const target = e.target as HTMLElement | null;
       const scrollableParent = target?.closest(".overflow-y-auto");
 
@@ -76,7 +77,6 @@ export function MainDisplayContainer({ initialData }: MainDisplayContainerProps)
         const atBottom =
           scrollableParent.scrollHeight - scrollableParent.scrollTop <= scrollableParent.clientHeight + 2;
 
-        // If not at extremes, allow internal scrolling
         if ((e.deltaY < 0 && !atTop) || (e.deltaY > 0 && !atBottom)) {
           return;
         }
@@ -92,10 +92,8 @@ export function MainDisplayContainer({ initialData }: MainDisplayContainerProps)
         }, 600);
 
         if (e.deltaY > 0) {
-          // Scroll Down -> Next Section
           setActiveSectionIndex((prev) => Math.min(prev + 1, NAV_SECTIONS.length - 1));
         } else {
-          // Scroll Up -> Previous Section
           setActiveSectionIndex((prev) => Math.max(prev - 1, 0));
         }
       }
@@ -223,11 +221,17 @@ export function MainDisplayContainer({ initialData }: MainDisplayContainerProps)
               {activeSection.id === "projects" && (
                 <ProjectsSection projects={initialData.projects} />
               )}
+              {activeSection.id === "experience" && (
+                <ExperienceSection experiences={initialData.experiences} />
+              )}
               {activeSection.id === "skills" && (
                 <SkillsSection skills={initialData.skills} />
               )}
               {activeSection.id === "achievements" && (
                 <AchievementsSection achievements={initialData.achievements} />
+              )}
+              {activeSection.id === "cv" && (
+                <CvSection activeCv={initialData.activeCv} />
               )}
               {activeSection.id === "contact" && (
                 <ContactSection />
@@ -245,7 +249,7 @@ export function MainDisplayContainer({ initialData }: MainDisplayContainerProps)
 
           <div className="flex items-center gap-3">
             <span className="hidden sm:inline text-zinc-600">Scroll or click Docker to switch</span>
-            <span className="text-amber-400 font-bold">{activeSection.number} / 05</span>
+            <span className="text-amber-400 font-bold">{activeSection.number} / {String(NAV_SECTIONS.length).padStart(2, "0")}</span>
           </div>
         </div>
       </div>
