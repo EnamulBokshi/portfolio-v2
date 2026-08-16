@@ -1,6 +1,7 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import { motion, AnimatePresence } from "framer-motion";
 import type { CV } from "@prisma/client";
 import {
   FileText,
@@ -23,6 +24,7 @@ import {
   ZoomIn,
   ZoomOut,
   RotateCcw,
+  X,
 } from "lucide-react";
 
 interface CvSectionProps {
@@ -55,6 +57,17 @@ export function CvSection({ activeCv }: CvSectionProps) {
   };
 
   const embedUrl = getEmbedUrl(rawUrl);
+
+  // Close modal on Escape key
+  useEffect(() => {
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (e.key === "Escape" && isMaximized) {
+        setIsMaximized(false);
+      }
+    };
+    window.addEventListener("keydown", handleKeyDown);
+    return () => window.removeEventListener("keydown", handleKeyDown);
+  }, [isMaximized]);
 
   return (
     <div className="flex flex-col h-full gap-3 overflow-hidden">
@@ -341,45 +354,72 @@ export function CvSection({ activeCv }: CvSectionProps) {
         )}
       </div>
 
-      {/* ── Maximized Modal Overlay ── */}
-      {isMaximized && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 sm:p-8 bg-black/90 backdrop-blur-2xl">
-          <div className="w-full h-full max-w-6xl rounded-3xl glass-panel border border-white/20 bg-[#0f1015] shadow-2xl flex flex-col p-4 sm:p-6 gap-3">
-            <div className="flex items-center justify-between border-b border-white/10 pb-3 shrink-0">
-              <div className="flex items-center gap-2">
-                <FileText className="w-4 h-4 text-amber-400" />
-                <span className="text-sm font-bold font-heading text-zinc-100">{versionLabel}</span>
+      {/* ── Maximized Modal Overlay with Spring Zoom Physics ── */}
+      <AnimatePresence>
+        {isMaximized && (
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            transition={{ duration: 0.22, ease: "easeOut" }}
+            onClick={() => setIsMaximized(false)}
+            className="fixed inset-0 z-50 flex items-center justify-center p-3 sm:p-6 md:p-8 bg-black/85 backdrop-blur-2xl cursor-pointer select-none"
+          >
+            <motion.div
+              initial={{ opacity: 0, scale: 0.88, y: 24 }}
+              animate={{ opacity: 1, scale: 1, y: 0 }}
+              exit={{ opacity: 0, scale: 0.9, y: 16 }}
+              transition={{
+                type: "spring",
+                damping: 26,
+                stiffness: 280,
+                mass: 0.75,
+              }}
+              onClick={(e) => e.stopPropagation()}
+              className="w-full h-full max-w-6xl rounded-3xl glass-panel border border-white/20 bg-[#0c0d12]/95 shadow-[0_0_50px_rgba(0,0,0,0.8)] flex flex-col p-4 sm:p-6 gap-3 cursor-default overflow-hidden relative"
+            >
+              <div className="flex items-center justify-between border-b border-white/10 pb-3 shrink-0">
+                <div className="flex items-center gap-2.5">
+                  <div className="w-8 h-8 rounded-lg bg-amber-500/10 border border-amber-400/20 flex items-center justify-center text-amber-400">
+                    <FileText className="w-4 h-4" />
+                  </div>
+                  <div>
+                    <span className="text-sm sm:text-base font-bold font-heading text-white">{versionLabel}</span>
+                    <div className="text-[10px] font-mono text-zinc-400">Fullscreen Document Reader</div>
+                  </div>
+                </div>
+
+                <div className="flex items-center gap-2">
+                  <a
+                    href={rawUrl}
+                    download={versionLabel}
+                    className="inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-xl text-xs font-mono bg-gradient-to-r from-amber-500 to-amber-600 hover:from-amber-400 hover:to-amber-500 text-zinc-950 font-bold shadow-md shadow-amber-500/20 transition-all cursor-pointer"
+                  >
+                    <FileDown className="w-3.5 h-3.5" />
+                    <span>Download</span>
+                  </a>
+
+                  <button
+                    onClick={() => setIsMaximized(false)}
+                    className="w-8 h-8 rounded-full bg-white/10 hover:bg-white/20 border border-white/15 text-zinc-300 hover:text-white flex items-center justify-center font-mono text-sm cursor-pointer transition-all hover:scale-105 active:scale-95"
+                    title="Close (Esc)"
+                  >
+                    <X className="w-4 h-4" />
+                  </button>
+                </div>
               </div>
 
-              <div className="flex items-center gap-2">
-                <a
-                  href={rawUrl}
-                  download={versionLabel}
-                  className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl text-xs font-mono bg-amber-500 text-zinc-950 font-bold hover:bg-amber-400"
-                >
-                  <FileDown className="w-3.5 h-3.5" />
-                  <span>Download</span>
-                </a>
-
-                <button
-                  onClick={() => setIsMaximized(false)}
-                  className="w-8 h-8 rounded-full bg-white/10 hover:bg-white/20 text-zinc-300 hover:text-white flex items-center justify-center font-mono text-sm cursor-pointer"
-                >
-                  ✕
-                </button>
+              <div className="flex-1 w-full rounded-2xl overflow-hidden bg-black/60 border border-white/10 shadow-inner">
+                <iframe
+                  src={`${embedUrl}#toolbar=1`}
+                  title="Maximized PDF View"
+                  className="w-full h-full border-0"
+                />
               </div>
-            </div>
-
-            <div className="flex-1 w-full rounded-2xl overflow-hidden bg-black/60 border border-white/10">
-              <iframe
-                src={`${embedUrl}#toolbar=1`}
-                title="Maximized PDF View"
-                className="w-full h-full border-0"
-              />
-            </div>
-          </div>
-        </div>
-      )}
+            </motion.div>
+          </motion.div>
+        )}
+      </AnimatePresence>
     </div>
   );
 }
