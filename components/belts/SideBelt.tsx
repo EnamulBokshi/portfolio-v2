@@ -44,6 +44,8 @@ export function SideBelt({ side, items, effect = "plasma-prism" }: SideBeltProps
   const singleSetHeight = items.length * ITEM_SPACING;
 
   const isMagnifier = effect === "magnifier";
+  const isTextFocus = effect === "text-focus";
+  const isDynamic = isMagnifier || isTextFocus;
 
   // ── rAF loop: direct DOM writes, zero React re-renders ──
   const tick = useCallback(() => {
@@ -61,8 +63,8 @@ export function SideBelt({ side, items, effect = "plasma-prism" }: SideBeltProps
       stripRef.current.style.transform = `translateY(${-offsetRef.current}px)`;
     }
 
-    // Per-item magnification via direct style writes
-    if (isMagnifier && containerRef.current) {
+    // Per-item dynamic physics (magnifier or text-focus) via direct style writes
+    if (isDynamic && containerRef.current) {
       const containerRect = containerRef.current.getBoundingClientRect();
       const centerY = containerRect.top + containerRect.height / 2;
 
@@ -73,23 +75,48 @@ export function SideBelt({ side, items, effect = "plasma-prism" }: SideBeltProps
         const elRect = el.getBoundingClientRect();
         const elCenterY = elRect.top + elRect.height / 2;
         const dist = Math.abs(elCenterY - centerY);
-        const norm = Math.min(dist / MAGNIFIER_RADIUS, 1);
+        const radius = isMagnifier ? MAGNIFIER_RADIUS : 170;
+        const norm = Math.min(dist / radius, 1);
 
         // Smooth quadratic ease-out
         const eased = 1 - norm * norm;
 
-        const scale = MIN_SCALE + (MAX_SCALE - MIN_SCALE) * eased;
-        const opacity = MIN_OPACITY + (MAX_OPACITY - MIN_OPACITY) * eased;
-        const brightness = 0.5 + 0.7 * eased;
+        if (isMagnifier) {
+          const scale = MIN_SCALE + (MAX_SCALE - MIN_SCALE) * eased;
+          const opacity = MIN_OPACITY + (MAX_OPACITY - MIN_OPACITY) * eased;
+          const brightness = 0.5 + 0.7 * eased;
 
-        el.style.transform = `scale(${scale.toFixed(3)})`;
-        el.style.opacity = opacity.toFixed(3);
-        el.style.filter = `brightness(${brightness.toFixed(2)})`;
+          el.style.transform = `scale(${scale.toFixed(3)})`;
+          el.style.opacity = opacity.toFixed(3);
+          el.style.filter = `brightness(${brightness.toFixed(2)})`;
+        } else if (isTextFocus) {
+          // Text Focus: Keep scale crisp and subtle, dramatically boost brightness & sharpness
+          const scale = 0.9 + 0.2 * eased;
+          const opacity = 0.18 + 0.82 * eased;
+          const brightness = 0.55 + 0.95 * eased;
+
+          el.style.transform = `scale(${scale.toFixed(3)})`;
+          el.style.opacity = opacity.toFixed(3);
+          el.style.filter = `brightness(${brightness.toFixed(2)}) contrast(${(1 + 0.3 * eased).toFixed(2)})`;
+
+          const labelEl = el.querySelector<HTMLSpanElement>(".belt-label");
+          if (labelEl) {
+            if (eased > 0.6) {
+              labelEl.style.color = "#FFFFFF";
+              labelEl.style.textShadow = `0 0 ${Math.round(14 * eased)}px rgba(255, 255, 255, ${0.7 * eased}), 0 0 20px rgba(245, 158, 11, ${0.4 * eased})`;
+              labelEl.style.fontWeight = "700";
+            } else {
+              labelEl.style.color = "#94A3B8";
+              labelEl.style.textShadow = "none";
+              labelEl.style.fontWeight = "500";
+            }
+          }
+        }
       }
     }
 
     rafRef.current = requestAnimationFrame(tick);
-  }, [isLeft, isMagnifier, singleSetHeight]);
+  }, [isLeft, isDynamic, isMagnifier, isTextFocus, singleSetHeight]);
 
   useEffect(() => {
     rafRef.current = requestAnimationFrame(tick);
@@ -99,7 +126,7 @@ export function SideBelt({ side, items, effect = "plasma-prism" }: SideBeltProps
   const onEnter = () => { pausedRef.current = true; };
   const onLeave = () => { pausedRef.current = false; };
 
-  // For non-magnifier: CSS animation class
+  // For static CSS-animation modes (plasma-prism, deep-light):
   const animClass = isLeft ? "animate-marquee-up" : "animate-marquee-down";
 
   return (
@@ -144,8 +171,8 @@ export function SideBelt({ side, items, effect = "plasma-prism" }: SideBeltProps
             "linear-gradient(to bottom, transparent 0%, rgba(0,0,0,0.1) 12%, black 30%, black 70%, rgba(0,0,0,0.1) 88%, transparent 100%)",
         }}
       >
-        {isMagnifier ? (
-          /* ══ MAGNIFIER: rAF-driven direct DOM transforms ══ */
+        {isDynamic ? (
+          /* ══ DYNAMIC (Magnifier or Text Focus): rAF-driven direct DOM transforms ══ */
           <div
             ref={stripRef}
             className="flex flex-col items-center py-10 cursor-default will-change-transform"
@@ -161,18 +188,18 @@ export function SideBelt({ side, items, effect = "plasma-prism" }: SideBeltProps
                   transition: "none",
                 }}
               >
-                {/* Hairline separator — stays subtle at any scale */}
-                <span className="w-3 h-[1px] bg-amber-400/40 shrink-0 rounded-full" />
+                {/* Hairline separator */}
+                <span className="w-3 h-[1px] bg-amber-400/30 shrink-0 rounded-full mb-1" />
 
-                {/* Label */}
-                <span className="text-[11px] md:text-[12px] font-mono tracking-widest uppercase whitespace-nowrap text-zinc-200 [writing-mode:vertical-lr] rotate-180 py-1">
+                {/* Label with crisp rendering */}
+                <span className="belt-label text-[11px] md:text-[12px] font-mono tracking-widest uppercase whitespace-nowrap text-zinc-200 [writing-mode:vertical-lr] rotate-180 py-1 transition-colors duration-150 subpixel-antialiased">
                   {item}
                 </span>
               </div>
             ))}
           </div>
         ) : (
-          /* ══ NON-MAGNIFIER: pure CSS animation ══ */
+          /* ══ STATIC MODES (Plasma Prism, Deep Light): pure CSS animation ══ */
           <div
             className={`flex flex-col items-center gap-12 py-10 opacity-80 hover:opacity-100 transition-opacity duration-300 cursor-default ${animClass}`}
           >
@@ -296,22 +323,26 @@ function renderEffectOverlay(effect: BeltEffectMode) {
     case "text-focus":
       return (
         <>
+          {/* Clean soft ambient spotlight behind text (NO scanning boxes or bounding lines) */}
           <div
             aria-hidden="true"
-            className="absolute top-1/2 -translate-y-1/2 w-24 h-48 pointer-events-none z-0 opacity-50"
+            className="absolute top-1/2 -translate-y-1/2 w-28 sm:w-36 h-48 pointer-events-none z-0 opacity-55"
             style={{
               background:
-                "radial-gradient(ellipse at center, rgba(245,158,11,0.35) 0%, rgba(251,191,36,0.1) 50%, transparent 75%)",
+                "radial-gradient(ellipse 60% 45% at 50% 50%, rgba(245, 158, 11, 0.3) 0%, rgba(251, 191, 36, 0.1) 45%, transparent 75%)",
               filter: "blur(16px)",
             }}
           />
+          {/* Subtle central white illumination core */}
           <div
             aria-hidden="true"
-            className="absolute top-1/2 -translate-y-1/2 flex flex-col justify-between w-8 sm:w-10 h-16 pointer-events-none z-10 opacity-70"
-          >
-            <div className="w-full h-[1px] bg-gradient-to-r from-transparent via-amber-400 to-transparent shadow-[0_0_6px_rgba(245,158,11,0.9)]" />
-            <div className="w-full h-[1px] bg-gradient-to-r from-transparent via-amber-400 to-transparent shadow-[0_0_6px_rgba(245,158,11,0.9)]" />
-          </div>
+            className="absolute top-1/2 -translate-y-1/2 w-14 h-24 rounded-full pointer-events-none z-0 opacity-40"
+            style={{
+              background:
+                "radial-gradient(circle, rgba(255, 255, 255, 0.4) 0%, rgba(251, 191, 36, 0.2) 50%, transparent 80%)",
+              filter: "blur(10px)",
+            }}
+          />
         </>
       );
 

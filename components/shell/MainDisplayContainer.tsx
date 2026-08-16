@@ -206,7 +206,7 @@ export function MainDisplayContainer({ initialData }: MainDisplayContainerProps)
     : DEFAULT_RIGHT_BELT;
 
   return (
-    <div className="relative w-full h-screen overflow-hidden flex flex-col items-center justify-center select-none bg-[#09090b]">
+    <div className="relative w-full h-screen overflow-hidden flex flex-col items-center justify-center select-none bg-transparent">
       {/* 1. Top Menu Docker */}
       <TopDocker
         activeSection={activeSection.id}

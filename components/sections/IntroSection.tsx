@@ -3,6 +3,7 @@
 import Image from "next/image";
 import { ArrowRight, Mail } from "lucide-react";
 import type { CV } from "@prisma/client";
+import { TypewriterRoles } from "@/components/ui/TypewriterRoles";
 
 interface IntroSectionProps {
   onNavigate: (sectionId: string) => void;
@@ -97,9 +98,16 @@ export function IntroSection({ onNavigate }: IntroSectionProps) {
                 Haque
               </span>
             </h1>
-            <div className="text-xs sm:text-base font-mono font-bold tracking-wider text-cyan-400/90 uppercase mt-0.5 flex items-center gap-2">
-              <span>Full-Stack Developer</span>
-              <span className="w-1.5 h-3.5 bg-amber-400 animate-pulse inline-block" />
+            <div className="mt-1 min-h-[1.75rem] flex items-center">
+              <TypewriterRoles
+                roles={[
+                  "Full-Stack Engineer",
+                  "System Architect",
+                  "DevOps Engineer",
+                  "AI Solution Crafter",
+                ]}
+                className="text-xs sm:text-base"
+              />
             </div>
           </div>
 
