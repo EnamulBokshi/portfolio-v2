@@ -1,0 +1,41 @@
+export const siteConfig = {
+  name: "Enamul Bokshi",
+  title: "Enamul Bokshi | Software Engineer & System Architect",
+  titleTemplate: "%s | Enamul Bokshi",
+  description:
+    "Software Engineer at Hype Corporation specializing in product architecture, NestJS, Next.js, RAG AI services, real-time voice & chat systems (SSE), Redis caching, PostgreSQL, and scalable SaaS platforms.",
+  url: process.env.NEXT_PUBLIC_SITE_URL || "https://enamulbokshi.com",
+  ogImage: "/opengraph-image",
+  locale: "en_US",
+  author: {
+    name: "Enamul Bokshi",
+    url: "https://enamulbokshi.com",
+    email: "enamulbokshi@gmail.com",
+    role: "Software Engineer at Hype Corporation",
+    summary:
+      "Software Engineer designing end-to-end product architectures, ERDs, AI RAG systems with real-time SSE streaming, high-throughput SaaS backends, and performant Next.js applications.",
+  },
+  socials: {
+    github: "https://github.com/EnamulBokshi",
+    linkedin: "https://linkedin.com/in/enamul-bokshi",
+    twitter: "https://x.com/enamul_bokshi",
+  },
+  keywords: [
+    "Enamul Bokshi",
+    "Software Engineer",
+    "Hype Corporation",
+    "NestJS Developer",
+    "Next.js Architect",
+    "RAG AI Engineer",
+    "Real-time AI Chat & Voice (SSE)",
+    "TypeScript Specialist",
+    "PostgreSQL & Prisma ORM",
+    "MongoDB & Mongoose",
+    "Supabase & TanStack Query",
+    "Redis Caching Architecture",
+    "Docker & CI/CD VPS Deployment",
+    "Full Stack SaaS Engineer",
+    "Dhaka Software Engineer",
+    "Remote Full Stack Engineer",
+  ],
+};

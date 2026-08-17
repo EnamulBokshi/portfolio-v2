@@ -1,0 +1,50 @@
+# Enamul Bokshi - Full Stack Engineer & System Architect
+
+> Senior Full Stack Software Engineer specializing in scalable web systems, Next.js 16+ App Router, React 19, TypeScript, distributed architectures, and high-performance databases.
+
+## Summary & Profile
+- **Name**: Enamul Bokshi (Md. Enamul Bokshi)
+- **Role**: Senior Full Stack Software Engineer & System Architect
+- **Website**: https://enamulbokshi.com
+- **GitHub**: https://github.com/EnamulBokshi
+- **LinkedIn**: https://linkedin.com/in/enamul-bokshi
+- **Location**: Dhaka, Bangladesh (Open to Global Remote & Relocation)
+- **Contact**: enamulbokshi@gmail.com
+
+## Core Technical Competencies
+- **Frontend**: Next.js 16 (App Router, Server Components, Server Actions), React 19, TypeScript, Tailwind CSS v4, Framer Motion, Base UI, Tiptap.
+- **Backend & APIs**: Node.js, Next.js Server Actions, RESTful APIs, WebSockets, Prisma ORM, PostgreSQL, Redis, Edge Computing.
+- **DevOps & Architecture**: Docker, Docker Compose, CI/CD, Zero-Trust Session Verification, Microservices, Performance Tuning (Core Web Vitals).
+- **AI & Integrations**: LLM Tool Calling, Autonomous Agent Pipelines, Structured Schema Extraction (Zod), Resend Email APIs, Vercel Blob.
+
+## Key Projects
+1. **Dynamic Interactive Portfolio v2**
+   - *Tech*: Next.js App Router, Tailwind CSS v4, Framer Motion, Prisma ORM, PostgreSQL, Docker.
+   - *Summary*: Production developer portfolio featuring real-time DB-backed content, glassmorphic UI, custom session proxy, and real-time contact inbox loops.
+   - *Repo*: https://github.com/EnamulBokshi/portfolio-v2
+
+2. **Cloud Infrastructure Observability**
+   - *Tech*: TypeScript, Node.js, Redis Pub/Sub, PostgreSQL timeseries, Docker.
+   - *Summary*: High-throughput telemetry ingestion pipeline processing millions of events per minute with real-time anomaly alerts and glassmorphic dashboards.
+   - *Repo*: https://github.com/EnamulBokshi/cloud-metrics
+
+3. **Real-time Collaboration Engine**
+   - *Tech*: React, WebSockets, CRDTs (Conflict-free Replicated Data Types), TypeScript, Next.js.
+   - *Summary*: Low-latency multiplayer state synchronization canvas with live cursor presence and optimistic UI reconciliation.
+   - *Repo*: https://github.com/EnamulBokshi/collab-canvas
+
+4. **Autonomous AI Agent Pipeline**
+   - *Tech*: Next.js, OpenAI / Google Gemini API, Zod, Docker, TypeScript, PostgreSQL.
+   - *Summary*: Agentic workflow orchestrator executing multi-step LLM tool calling, structured JSON output validation, and sandboxed code execution.
+
+5. **Zero-Trust Auth & Session Gateway**
+   - *Tech*: Next.js Proxy (`proxy.ts`), jose JWT verification, bcryptjs, Redis token cache.
+   - *Summary*: Edge-compatible cryptographic authentication proxy enforcing brute-force IP throttling and sub-millisecond session validation.
+
+## Experience Highlights
+- **Lead Full Stack Engineer** at HighScale Cloud Systems (2023 - Present): Architected Next.js applications serving 500k+ MAU with sub-100ms response times.
+- **Senior Software Engineer** at Apex Digital Solutions (2021 - 2022): Built real-time enterprise collaboration tools and multi-tenant PostgreSQL systems.
+- **Software Engineer** at Innovate Tech Labs (2019 - 2021): Engineered high-performance frontend components and optimized database throughput by 30%.
+
+## Documentation & Deep-Dive
+- Full case studies and architecture docs: https://enamulbokshi.com/llms-full.txt

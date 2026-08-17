@@ -1,0 +1,53 @@
+# Enamul Bokshi — Comprehensive Technical Documentation & Case Studies
+
+## Author Bio
+Enamul Bokshi (Md. Enamul Bokshi) is a Software Engineer and System Architect at **Hype Corporation**. He specializes in end-to-end product architecture, NestJS microservices, Next.js applications, RAG AI services, real-time voice and chat streaming (SSE), Redis caching, and resilient database architectures.
+
+- **Primary Technologies**: NestJS, Node.js, Express, Next.js, Supabase, TanStack Query, Prisma ORM, Mongoose, MongoDB, PostgreSQL, Redis, Docker.
+- **Tools**: Antigravity, Git, GitHub, Claude, VPS, Vercel.
+- **Architectural Philosophy**: Clean Architecture, Server-First Rendering (SSR, SSG, ISR), Type-Safe Contracts, Low-Latency Real-Time Streaming, Scalable Cloud Deployment.
+- **Official Website**: https://enamulbokshi.com
+- **Contact Email**: enamulbokshi@gmail.com
+- **GitHub**: https://github.com/EnamulBokshi
+- **LinkedIn**: https://linkedin.com/in/enamul-bokshi
+
+---
+
+## Professional Experience
+
+### Software Engineer — Hype Corporation (Current)
+- **Product & System Architecture**: Design full-stack software architectures from inception, including Domain-Driven Design (DDD), API contracts, and ERDs.
+- **Database Engineering**: Architect relational (PostgreSQL via Prisma ORM) and document-based (MongoDB via Mongoose) database models, executing automated database migrations.
+- **RAG & GenAI Integration**: Build Retrieval-Augmented Generation (RAG) knowledge retrieval pipelines and real-time AI capabilities, including interactive voice and chat interfaces streaming via Server-Sent Events (SSE).
+- **High-Throughput SaaS Backends**: Engineer NestJS, Express, and Node.js SaaS backends with layered Redis caching for rapid data retrieval and minimal query load.
+- **Frontend Mentorship & Rendering Optimization**: Guide frontend engineers in building fluid, engaging glassmorphic user interfaces, enforcing optimal client-side caching with TanStack Query and selecting optimal Next.js rendering strategies (SSR, SSG, CSR, ISR).
+- **DevOps & Cloud Delivery**: Containerize applications with Docker and configure automated CI/CD pipelines for deployment across VPS and Vercel environments.
+
+---
+
+## Detailed Project Architectures
+
+### 1. Real-Time AI Chat & Voice Assistant (SSE & RAG Pipeline)
+- **Architecture**: NestJS backend orchestrating vector embeddings, context retrieval, and low-latency Server-Sent Events (SSE) streaming connected to a Next.js / TanStack frontend.
+- **Key Modules**:
+  - Voice audio chunking and speech-to-text / text-to-speech synchronization.
+  - Redis cache layer for conversational memory and token throttling.
+  - Zero-latency token streaming with client-side optimistic reconciliation.
+
+### 2. Interactive Portfolio v2
+- **Architecture**: Next.js 16 App Router utilizing React Server Components (RSC), custom dynamic theme CSS variable generation, and PostgreSQL data persistence.
+- **Key Modules**:
+  - `proxy.ts`: Next.js 16 proxy pattern verifying JWT admin cookies and protecting backend mutations.
+  - `services/`: Encapsulated data layer querying PostgreSQL through Prisma 7 with native pg pooling.
+  - `components/seo/JsonLd.tsx`: Deep machine-readable JSON-LD entity graph for Google Knowledge Graph and AI search engines.
+
+### 3. Cloud Infrastructure Observability
+- **Problem**: High volume microservice metric telemetry was saturating relational databases and causing high latency in visual dashboards.
+- **Solution**: Designed a high-throughput metric ingestion pipeline using Node.js streams, Redis Pub/Sub, and timeseries aggregations in PostgreSQL.
+- **Impact**: Reduced query latency by 65% and successfully ingested over 1.2M metrics per minute without memory degradation.
+
+---
+
+## Contact & Inquiry
+- **Email**: enamulbokshi@gmail.com
+- **Inquiry Form**: Available at https://enamulbokshi.com/#contact

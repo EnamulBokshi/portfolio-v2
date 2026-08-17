@@ -60,16 +60,16 @@ async function main() {
 
   // 3. Seed Skills
   const defaultSkills = [
-    { name: "Next.js", category: "Frontend", proficiency: 95, order: 1 },
-    { name: "React", category: "Frontend", proficiency: 95, order: 2 },
-    { name: "TypeScript", category: "Languages", proficiency: 90, order: 3 },
-    { name: "Node.js", category: "Backend", proficiency: 90, order: 4 },
-    { name: "PostgreSQL", category: "Database", proficiency: 85, order: 5 },
-    { name: "Prisma ORM", category: "Database", proficiency: 90, order: 6 },
-    { name: "Tailwind CSS", category: "Frontend", proficiency: 95, order: 7 },
-    { name: "Framer Motion", category: "Frontend", proficiency: 85, order: 8 },
-    { name: "Docker", category: "DevOps", proficiency: 80, order: 9 },
-    { name: "GraphQL", category: "Backend", proficiency: 80, order: 10 },
+    { name: "NestJS", category: "Backend", proficiency: 95, order: 1 },
+    { name: "Next.js", category: "Frontend", proficiency: 95, order: 2 },
+    { name: "Node.js / Express", category: "Backend", proficiency: 92, order: 3 },
+    { name: "TypeScript", category: "Languages", proficiency: 95, order: 4 },
+    { name: "PostgreSQL & Prisma", category: "Database", proficiency: 90, order: 5 },
+    { name: "MongoDB & Mongoose", category: "Database", proficiency: 88, order: 6 },
+    { name: "Supabase & TanStack", category: "Full Stack", proficiency: 90, order: 7 },
+    { name: "Redis Caching", category: "Database", proficiency: 88, order: 8 },
+    { name: "RAG & AI SSE Streaming", category: "AI & Real-time", proficiency: 92, order: 9 },
+    { name: "Docker & VPS CI/CD", category: "DevOps", proficiency: 85, order: 10 },
   ];
 
   for (const skill of defaultSkills) {
@@ -82,13 +82,13 @@ async function main() {
 
   // 4. Seed Belt Items
   const defaultBelts = [
-    { label: "Full Stack Architecture", context: BeltContext.GLOBAL, order: 1 },
-    { label: "High Performance Web", context: BeltContext.GLOBAL, order: 2 },
-    { label: "Next.js App Router", context: BeltContext.GLOBAL, order: 3 },
-    { label: "TypeScript & Type Safety", context: BeltContext.GLOBAL, order: 4 },
-    { label: "Interactive Animations", context: BeltContext.GLOBAL, order: 5 },
-    { label: "Docker & Cloud Native", context: BeltContext.GLOBAL, order: 6 },
-    { label: "Clean Code & Scalability", context: BeltContext.GLOBAL, order: 7 },
+    { label: "Product & System Architecture", context: BeltContext.GLOBAL, order: 1 },
+    { label: "RAG & Real-time AI Voice (SSE)", context: BeltContext.GLOBAL, order: 2 },
+    { label: "NestJS & Node.js SaaS Backends", context: BeltContext.GLOBAL, order: 3 },
+    { label: "Next.js SSR / SSG / ISR Rendering", context: BeltContext.GLOBAL, order: 4 },
+    { label: "PostgreSQL & MongoDB Database Migrations", context: BeltContext.GLOBAL, order: 5 },
+    { label: "Redis Caching & Invalidation", context: BeltContext.GLOBAL, order: 6 },
+    { label: "Docker & VPS CI/CD Pipelines", context: BeltContext.GLOBAL, order: 7 },
   ];
 
   for (const belt of defaultBelts) {
@@ -109,7 +109,7 @@ async function main() {
       summary: "Modern developer portfolio with real-time DB-backed content, glassmorphic UI, and interactive contact inbox.",
       description: "A showcase portfolio built with Next.js App Router, Tailwind CSS v4, Framer Motion, and PostgreSQL. Features complete admin dashboard, custom session auth, and real-time email notification loops.",
       techTags: ["Next.js", "React", "TypeScript", "Tailwind CSS", "Prisma", "PostgreSQL", "Docker"],
-      liveUrl: "https://enamul.dev",
+      liveUrl: "https://enamulbokshi.com",
       repoUrl: "https://github.com/EnamulBokshi/portfolio-v2",
       featured: true,
       order: 1,
@@ -138,10 +138,10 @@ async function main() {
     },
     {
       slug: "ai-workflow-automation-agent",
-      title: "Autonomous AI Agent Pipeline",
-      summary: "Agentic workflow orchestrator executing multi-step LLM tool calling and code validation sandboxes.",
+      title: "Autonomous AI Agent & RAG Pipeline",
+      summary: "Agentic workflow orchestrator executing multi-step LLM tool calling, real-time voice streaming with SSE, and RAG knowledge retrieval.",
       description: "Engineered scalable background task workers with priority queues, structured JSON validation with Zod, and resilient fallback strategies for autonomous generative AI pipelines.",
-      techTags: ["Next.js", "OpenAI / Gemini", "Zod", "Docker", "TypeScript", "PostgreSQL"],
+      techTags: ["NestJS", "Next.js", "OpenAI / Claude", "Zod", "Docker", "TypeScript", "PostgreSQL"],
       liveUrl: "https://ai-agent.enamul.dev",
       repoUrl: "https://github.com/EnamulBokshi/ai-agent-pipeline",
       featured: false,
@@ -186,54 +186,23 @@ async function main() {
   // 7. Seed Work Experiences
   const defaultExperiences = [
     {
-      role: "Lead Full Stack Engineer",
-      company: "HighScale Cloud Systems",
+      role: "Software Engineer",
+      company: "Hype Corporation",
       companyUrl: "https://example.com",
-      location: "Remote / Global",
+      location: "Dhaka, Bangladesh / Remote",
       startDate: new Date("2023-01-01"),
       endDate: null,
       current: true,
-      description: "Leading the core architectural design and implementation of distributed web platforms and real-time dashboard analytics.",
+      description: "Designing end-to-end product architectures, comprehensive ERDs, AI RAG services, real-time voice & SSE chat systems, and high-throughput SaaS backends.",
       highlights: [
-        "Architected scalable Next.js App Router applications serving 500k+ monthly active users with sub-100ms response times.",
-        "Engineered type-safe microservices with PostgreSQL, Prisma, Redis cache invalidation, and Docker containerization.",
-        "Implemented secure JWT session verification pipelines reducing latency by 45% over legacy middleware."
+        "Architected complete product systems from initial ERD design to automated database migrations using PostgreSQL (Prisma) and MongoDB (Mongoose).",
+        "Engineered production RAG AI services featuring real-time chat and voice interaction streaming over Server-Sent Events (SSE).",
+        "Designed and developed scalable SaaS backends with NestJS, Node.js, Express, and high-throughput Redis caching layers.",
+        "Collaborated with frontend teams to implement optimized client-side caching (TanStack Query) and Next.js SSR, SSG, CSR, and ISR rendering strategies.",
+        "Automated containerization and production deployments across VPS and Vercel environments using Docker and CI/CD pipelines."
       ],
-      techTags: ["Next.js", "TypeScript", "PostgreSQL", "Docker", "Redis", "Tailwind CSS"],
+      techTags: ["NestJS", "Node.js", "Express", "Next.js", "Supabase", "TanStack Query", "Prisma ORM", "Mongoose", "PostgreSQL", "MongoDB", "Redis", "Docker"],
       order: 1,
-    },
-    {
-      role: "Senior Software Engineer",
-      company: "Apex Digital Solutions",
-      companyUrl: "https://example.com",
-      location: "Dhaka, Bangladesh",
-      startDate: new Date("2021-03-01"),
-      endDate: new Date("2022-12-31"),
-      current: false,
-      description: "Developed enterprise full-stack portals, RESTful & RPC APIs, and custom CRM systems with real-time websocket integrations.",
-      highlights: [
-        "Built responsive real-time data visualizers and collaborative workspace boards with React and WebSockets.",
-        "Designed resilient database schemas and automated migration workflows across multi-tenant PostgreSQL clusters.",
-        "Mentored a team of 6 engineers on TypeScript best practices, automated CI/CD pipelines, and clean architecture."
-      ],
-      techTags: ["React", "Node.js", "TypeScript", "PostgreSQL", "Prisma", "Docker"],
-      order: 2,
-    },
-    {
-      role: "Software Engineer",
-      company: "Innovate Tech Labs",
-      companyUrl: "https://example.com",
-      location: "Dhaka, Bangladesh",
-      startDate: new Date("2019-06-01"),
-      endDate: new Date("2021-02-28"),
-      current: false,
-      description: "Implemented high-performance frontend components, backend REST services, and database optimizations.",
-      highlights: [
-        "Delivered 10+ client web applications with modern frontend frameworks and reusable component libraries.",
-        "Refactored relational database queries and indexed slow execution paths, improving overall throughput by 30%."
-      ],
-      techTags: ["JavaScript", "React", "Node.js", "MySQL", "Express"],
-      order: 3,
     },
   ];
 
@@ -243,6 +212,11 @@ async function main() {
     });
     if (!existing) {
       await prisma.experience.create({ data: exp });
+    } else {
+      await prisma.experience.update({
+        where: { id: existing.id },
+        data: exp,
+      });
     }
   }
   console.log(`💼 Work Experiences seeded (${defaultExperiences.length} roles)`);
