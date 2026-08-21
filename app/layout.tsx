@@ -7,6 +7,7 @@ import { JsonLd } from "@/components/seo/JsonLd";
 import { generatePersonSchema, generateWebSiteSchema, generateProfilePageSchema } from "@/services/seo-service";
 import { siteConfig } from "@/lib/seo-config";
 import "./globals.css";
+import Script from "next/script";
 
 const spaceGrotesk = Space_Grotesk({
   variable: "--font-heading",
@@ -115,6 +116,13 @@ export default async function RootLayout({
         <CustomCursor />
         <MainBody />
         {children}
+        <Script
+          src="http://localhost:3000/widget/ora-widget.js"
+          data-ora-key="biz_live_952157272a36e78aa8c949d9"
+          data-ora-api="http://localhost:5000"
+          strategy="afterInteractive"
+        />
+
       </body>
     </html>
   );
