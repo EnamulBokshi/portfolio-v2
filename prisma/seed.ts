@@ -1,12 +1,17 @@
+import net from "net";
 import { PrismaClient, BeltContext } from "@prisma/client";
 import { PrismaPg } from "@prisma/adapter-pg";
 import { Pool } from "pg";
 import bcrypt from "bcryptjs";
 import dotenv from "dotenv";
 
+if (typeof net.setDefaultAutoSelectFamily === "function") {
+  net.setDefaultAutoSelectFamily(false);
+}
+
 dotenv.config();
 
-const connectionString = process.env.DATABASE_URL || "postgresql://postgres:password@localhost:5432/portfolio?schema=public";
+const connectionString = process.env.DATABASE_URL_UNPOOLED || process.env.DATABASE_URL || "postgresql://postgres:postgrespassword@localhost:5436/portfolio?schema=public";
 const pool = new Pool({ connectionString });
 const adapter = new PrismaPg(pool);
 const prisma = new PrismaClient({ adapter });
